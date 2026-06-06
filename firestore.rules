@@ -1,0 +1,140 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- GlOBAL HELPERS ---
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedAdmin() {
+      return isSignedIn() && 
+             request.auth.token.email == "dhiirakoo@gmail.com" && 
+             request.auth.token.email_verified == true;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // --- COLLECTION RULES & SCHEMAS ---
+
+    // 1. Users Collection
+    match /users/{userId} {
+      allow read: if isSignedIn() && (request.auth.uid == userId || isVerifiedAdmin());
+      
+      allow create: if isSignedIn() && 
+                    request.auth.uid == userId && 
+                    isValidId(userId) &&
+                    incoming().uid == userId &&
+                    incoming().role == "student" &&
+                    incoming().email == request.auth.token.email &&
+                    incoming().keys().hasAll(["uid", "email", "role", "createdAt"]) &&
+                    incoming().keys().size() == 4;
+
+      allow update: if isSignedIn() && (
+                      (request.auth.uid == userId && 
+                       incoming().uid == existing().uid &&
+                       incoming().role == existing().role &&
+                       incoming().email == existing().email) || 
+                      isVerifiedAdmin()
+                    );
+      
+      allow delete: if isVerifiedAdmin();
+    }
+
+    // Helper validation for Enrollments
+    function isValidEnrollment(data) {
+      return data.enrollmentId is string && isValidId(data.enrollmentId) &&
+             data.userId == request.auth.uid &&
+             data.courseId is string && data.courseId.size() <= 64 &&
+             data.courseName is string && data.courseName.size() <= 128 &&
+             (data.price is int || data.price is float) && data.price == 200 &&
+             (data.paymentMethod == "CBE" || data.paymentMethod == "Telebirr") &&
+             data.transactionRef is string && data.transactionRef.size() > 0 && data.transactionRef.size() <= 128 &&
+             (data.status == "pending" || data.status == "approved" || data.status == "rejected");
+    }
+
+    // 2. Enrollments Collection
+    match /enrollments/{enrollmentId} {
+      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isVerifiedAdmin());
+      
+      allow create: if isSignedIn() && 
+                    incoming().enrollmentId == enrollmentId &&
+                    incoming().status == "pending" && 
+                    incoming().submittedAt == request.time &&
+                    isValidEnrollment(incoming()) &&
+                    incoming().keys().hasAll(["enrollmentId", "userId", "userEmail", "courseId", "courseName", "price", "paymentMethod", "transactionRef", "status", "submittedAt", "updatedAt"]) &&
+                    incoming().keys().size() == 11;
+      
+      allow update: if isSignedIn() && (
+                      isVerifiedAdmin() || 
+                      (resource.data.userId == request.auth.uid && 
+                       resource.data.status == "pending" &&
+                       incoming().status == "pending" &&
+                       incoming().updatedAt == request.time &&
+                       incoming().diff(existing()).affectedKeys().hasOnly(["transactionRef", "paymentMethod", "updatedAt"]) &&
+                       isValidEnrollment(incoming()))
+                    );
+
+      allow delete: if isVerifiedAdmin();
+    }
+
+    // Helper validation for Progress
+    function isValidProgress(data) {
+      return data.progressId is string && isValidId(data.progressId) &&
+             data.userId == request.auth.uid &&
+             data.courseId is string && data.courseId.size() <= 64 &&
+             data.lessonId is string && data.lessonId.size() <= 64;
+    }
+
+    // 3. Progress Collection
+    match /progress/{progressId} {
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || isVerifiedAdmin());
+      
+      allow create: if isSignedIn() && 
+                    incoming().progressId == progressId &&
+                    incoming().completedAt == request.time &&
+                    isValidProgress(incoming()) &&
+                    incoming().keys().hasAll(["progressId", "userId", "courseId", "lessonId", "completedAt"]) &&
+                    incoming().keys().size() == 5;
+      
+      allow update: if false; // Progress completion events are immutable
+
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    // Helper validation for messages
+    function isValidMessage(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() <= 128 &&
+             data.email is string && data.email.size() > 0 && data.email.size() <= 256 &&
+             data.message is string && data.message.size() > 0 && data.message.size() <= 2000;
+    }
+
+    // 4. Contact Messages Collection
+    match /messages/{messageId} {
+      allow read: if isVerifiedAdmin();
+      
+      allow create: if incoming().submittedAt == request.time &&
+                    isValidMessage(incoming()) &&
+                    incoming().keys().hasAll(["name", "email", "message", "submittedAt"]) &&
+                    incoming().keys().size() == 4;
+
+      allow update, delete: if isVerifiedAdmin();
+    }
+  }
+}

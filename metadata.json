@@ -1,0 +1,8 @@
+{
+  "name": "Amoo Academy",
+  "description": "An premium digital and technology courses academy in Afaan Oromoo and English.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

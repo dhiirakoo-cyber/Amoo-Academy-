@@ -1,0 +1,79 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User profile with roles and metadata",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["student", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role", "createdAt"]
+    },
+    "Enrollment": {
+      "title": "Enrollment",
+      "description": "Course buy enrollment tickets with payment details",
+      "type": "object",
+      "properties": {
+        "enrollmentId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "courseId": { "type": "string" },
+        "courseName": { "type": "string" },
+        "price": { "type": "number" },
+        "paymentMethod": { "type": "string", "enum": ["CBE", "Telebirr"] },
+        "transactionRef": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "submittedAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["enrollmentId", "userId", "courseId", "paymentMethod", "transactionRef", "status", "submittedAt"]
+    },
+    "LessonProgress": {
+      "title": "LessonProgress",
+      "description": "Lessons marked as completed by students",
+      "type": "object",
+      "properties": {
+        "progressId": { "type": "string" },
+        "userId": { "type": "string" },
+        "courseId": { "type": "string" },
+        "lessonId": { "type": "string" },
+        "completedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["progressId", "userId", "courseId", "lessonId", "completedAt"]
+    },
+    "ContactMessage": {
+      "title": "ContactMessage",
+      "description": "Messages submitted through the contact form",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "message": { "type": "string" },
+        "submittedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "email", "message", "submittedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "#/entities/UserProfile",
+      "description": "Access to student profile user roles"
+    },
+    "/enrollments/{enrollmentId}": {
+      "schema": "#/entities/Enrollment",
+      "description": "Course access/purchase tokens and transaction states"
+    },
+    "/progress/{progressId}": {
+      "schema": "#/entities/LessonProgress",
+      "description": "Lessons completed by users in specific courses"
+    },
+    "/messages/{messageId}": {
+      "schema": "#/entities/ContactMessage",
+      "description": "Feedback messages sent to the academy staff"
+    }
+  }
+}
