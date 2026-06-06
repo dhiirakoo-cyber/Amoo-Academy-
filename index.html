@@ -4,15 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Amoo Academy | Bilingual Slate Platform</title>
-    <!-- Plus Jakarta Sans Font -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS (Play CDN for fully responsive compiled layouts) -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Vector Graphics -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -31,65 +29,76 @@
             background-color: #0b0f19;
             color: #f1f5f9;
         }
-        /* Custom scrollbar optimization */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 9999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #475569;
-        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        
+        /* Language Display Logic */
+        body.lang-om-only .lang-content-en { display: none !important; }
+        body.lang-en-only .lang-content-om { display: none !important; }
+        
+        /* Modals Default */
+        .modal { transition: opacity 0.3s; opacity: 0; pointer-events: none; }
+        .modal.active { opacity: 1; pointer-events: auto; }
+        .view-section { display: none; }
+        .view-section.active { display: block; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-blue-600 selection:text-white">
+<body class="min-h-screen flex flex-col justify-between selection:bg-blue-600 selection:text-white lang-both">
 
-    <!-- TOP BILINGUAL ANNOUNCEMENT TICKER -->
-    <div class="bg-gradient-to-r from-blue-700 via-indigo-800 to-amber-700 py-2.5 px-4 text-center text-xs font-mono font-black uppercase tracking-wider text-white">
+    <!-- TOP ANNOUNCEMENT TICKER -->
+    <div class="bg-gradient-to-r from-blue-700 via-indigo-800 to-amber-700 py-2 px-4 text-center text-xs font-bold uppercase tracking-wider text-white">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-center items-center gap-1.5 md:gap-4 select-none">
-            <span>Dandeettii Tekinoolojii fi Daldalaa Salphaatti Baradhaa!</span>
+            <span class="lang-content-om">Dandeettii Tekinoolojii salphaatti baradhaa!</span>
             <span class="hidden md:inline text-slate-400">|</span>
-            <span>Master Tech & Digital Business Workflows Instantly!</span>
+            <span class="lang-content-en">Master Tech Workflows Instantly!</span>
         </div>
     </div>
 
-    <!-- MAIN COHESIVE HEADER -->
+    <!-- MAIN NAVBAR -->
     <nav class="bg-slate-950 sticky top-0 z-40 border-b border-slate-800 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex h-16 justify-between items-center">
+            <div class="flex h-16 justify-between items-center gap-2">
                 
-                <!-- Brand logo with amber design -->
-                <div class="flex items-center gap-1.5 cursor-pointer" onclick="navigateAndReset()">
+                <div class="flex items-center gap-1.5 cursor-pointer shrink-0" onclick="navigateTo('home')">
                     <span class="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-1.5">
                         <span class="text-blue-500">Amoo</span>
-                        <span class="text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded-xl border border-amber-400/20 text-xs sm:text-sm font-extrabold uppercase font-mono">Academy</span>
+                        <span class="text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded-xl border border-amber-400/20 text-xs sm:text-sm font-extrabold uppercase shrink-0">Academy</span>
                     </span>
                 </div>
 
-                <!-- Session Metrics and controls -->
-                <div class="flex items-center space-x-3">
-                    <div class="bg-slate-900 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-xl text-[10px] font-black tracking-wider uppercase font-mono flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
-                        <span>BILINGUAL CLASSROOM / OM & EN</span>
-                    </div>
+                <div class="flex items-center space-x-2 sm:space-x-3 overflow-x-auto no-scrollbar">
                     
+                    <!-- Language Switcher -->
+                    <div class="flex bg-slate-900 border border-slate-800 rounded-lg p-0.5 shrink-0">
+                        <button onclick="setGlobalLang('om')" id="btn-lang-om" class="px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md hover:text-white text-slate-400 transition" title="Oromoo Only">OM</button>
+                        <button onclick="setGlobalLang('en')" id="btn-lang-en" class="px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md hover:text-white text-slate-400 transition" title="English Only">EN</button>
+                        <button onclick="setGlobalLang('both')" id="btn-lang-both" class="px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md bg-slate-700 text-white transition" title="Side by Side">OM/EN</button>
+                    </div>
+
                     <!-- Sandbox Admin Switcher button -->
-                    <button onclick="toggleAdminView()" id="admin-trigger-panel" class="hidden text-[10px] sm:text-xs font-extrabold py-1.5 px-3 rounded-xl bg-amber-400/10 border border-amber-400/20 text-amber-300 hover:bg-amber-400/20 transition cursor-pointer flex items-center gap-1">
+                    <button id="admin-nav-btn" onclick="navigateTo('admin')" class="hidden text-[10px] sm:text-xs font-bold py-1.5 px-3 rounded-lg bg-amber-400/10 border border-amber-400/20 text-amber-300 hover:bg-amber-400/20 transition cursor-pointer shrink-0">
                         <i class="fa-solid fa-shield-halved"></i>
-                        <span>Admin Dashboard</span>
+                        <span class="hidden sm:inline ml-1">Admin</span>
                     </button>
 
                     <!-- User Session Action -->
-                    <div id="auth-session-block">
-                        <button onclick="showModal('auth-modal')" class="bg-blue-600 hover:bg-blue-500 text-white text-[11px] sm:text-xs font-bold py-1.5 sm:py-2 px-3 sm:px-4 rounded-xl transition shadow flex items-center gap-1 cursor-pointer">
-                            <i class="fa-regular fa-circle-user text-xs"></i>
-                            <span>Seeni / Login</span>
+                    <div id="auth-container" class="shrink-0">
+                        <button id="login-btn" onclick="authLogin()" class="bg-blue-600 hover:bg-blue-500 text-white text-[11px] sm:text-xs font-bold py-1.5 sm:py-2 px-3 sm:px-4 rounded-lg transition shadow flex items-center gap-1 cursor-pointer">
+                            <i class="fa-brands fa-google"></i>
+                            <span class="lang-content-om">Seeni</span>
+                            <span class="lang-content-both-slash">/</span>
+                            <span class="lang-content-en">Login</span>
                         </button>
+                        
+                        <div id="user-menu" class="hidden flex items-center gap-3">
+                            <span id="user-display-name" class="text-xs font-bold text-slate-300 hidden sm:inline"></span>
+                            <button onclick="authLogout()" class="border border-slate-700 hover:bg-slate-800 text-slate-300 text-[11px] sm:text-xs font-bold py-1.5 px-3 rounded-lg transition cursor-pointer">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -97,1173 +106,460 @@
         </div>
     </nav>
 
-    <main class="flex-grow">
-        
-        <!-- MAIN HOME VIEW (HERO + COURSES) -->
-        <div id="home-view" class="transition-all duration-300">
-            
-            <!-- BEAUTIFUL HERO GRADIENT -->
-            <section class="relative bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white overflow-hidden py-16 sm:py-20 px-4 border-b border-slate-800">
-                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-500/5 via-transparent to-transparent pointer-events-none"></div>
-                
-                <div class="max-w-7xl mx-auto relative z-10">
-                    <div class="text-center mb-10">
-                        <span class="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-300 text-xs font-black px-4 py-1.5 rounded-full font-mono uppercase tracking-wider">
-                            <span class="flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <span>Baga nagaan dhuftan! / Welcome to Amoo Academy Portal</span>
-                        </span>
-                    </div>
-
-                    <!-- Permanent side-by-side translation layout -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-6xl mx-auto border-y border-slate-800 py-8 text-left mb-10">
-                        <div class="space-y-4 md:border-r md:border-slate-800/80 md:pr-10">
-                            <span class="text-[9px] font-mono font-black text-amber-400 bg-amber-400/5 border border-amber-400/20 px-2 py-0.5 rounded">AFAAN OROMOO</span>
-                            <h2 class="text-2xl sm:text-4xl font-black text-white leading-tight">Ogummaa Keessan <br><span class="text-amber-400">Sadarkaa Itti Aanutti</span> Ceesisaa!</h2>
-                            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed font-light">Koorsota tekinoolojii fi daldalaa gadi fageenyaan qophaa'an afaan keessaniin baradhaa. Gulaala viidiyoo, dizaayinii fi AI dandeettii daldalaaf!</p>
-                        </div>
-                        <div class="space-y-4 md:pl-2">
-                            <span class="text-[9px] font-mono font-black text-blue-400 bg-blue-500/5 border border-blue-500/20 px-2 py-0.5 rounded">ENGLISH LANGUAGE</span>
-                            <h2 class="text-2xl sm:text-4xl font-black text-white leading-tight font-display">Elevate Your <br><span class="text-blue-500">Digital Skills</span> to the Next Level!</h2>
-                            <p class="text-slate-400 text-xs sm:text-sm leading-relaxed font-light">Learn premium technology and business courses structured fully in your language. Master cinematic editing, graphic layout systems, and prompt scripting.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <a href="#courses-catalog" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-3.5 px-8 rounded-xl text-xs uppercase tracking-wider transition-all transform hover:-translate-y-0.5 shadow-lg shadow-blue-600/10 cursor-pointer text-center">
-                            Barumsa Filadhu / Explore Courses
-                        </a>
-                        <a href="#payment-information" class="w-full sm:w-auto bg-slate-900 hover:bg-slate-850 text-slate-200 font-extrabold py-3.5 px-8 rounded-xl border border-slate-800 text-xs uppercase tracking-wider transition-all cursor-pointer text-center">
-                            Kaffaltii fi Gargaarsa / Payment Info
-                        </a>
-                    </div>
-                </div>
-            </section>
-
-            <!-- COURSES CATALOG -->
-            <section id="courses-catalog" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                
-                <div class="text-center mb-12">
-                    <span class="text-[10px] font-black text-blue-400 uppercase tracking-widest bg-blue-500/10 px-3.5 py-1.5 rounded-full border border-blue-500/25 font-mono">
-                        COURSES CATALOG / DIGIDAA BARNOOTAA
+    <main class="flex-grow w-full">
+        <!-- 1. HOME VIEW -->
+        <div id="view-home" class="view-section active w-full">
+            <section class="bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 border-b border-slate-800 py-16 px-4 text-center overflow-hidden relative">
+                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent pointer-events-none"></div>
+                <div class="max-w-4xl mx-auto relative z-10 space-y-6">
+                    <span class="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-300 text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                        <span class="flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span class="lang-content-om">Baga nagaan dhuftan</span>
+                        <span class="lang-content-both-slash mx-0.5">|</span>
+                        <span class="lang-content-en">Welcome</span>
                     </span>
-                    <h3 class="text-2xl sm:text-3xl font-black text-white mt-4 tracking-tight font-display">
-                        Koorsota Keenya Filadhaa / Our Specialized Tech Academies
+                    
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+                        <div class="lang-content-om text-left flex-1">
+                            <span class="text-[9px] font-black text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded uppercase">Afaan Oromoo</span>
+                            <h2 class="text-3xl sm:text-4xl font-black text-white mt-2 leading-tight">Ogummaa Keessan <span class="text-amber-400">Guddisaa!</span></h2>
+                            <p class="text-slate-400 text-xs sm:text-sm mt-2 leading-relaxed">Koorsota tekinoolojii fi daldalaa gadi fageenyaan qophaa'an afaan keessaniin baradhaa.</p>
+                        </div>
+                        <div class="hidden md:block w-px h-24 bg-slate-800"></div>
+                        <div class="lang-content-en text-left flex-1">
+                            <span class="text-[9px] font-black text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded uppercase">English</span>
+                            <h2 class="text-3xl sm:text-4xl font-black text-white mt-2 leading-tight">Elevate Your <span class="text-blue-500">Skills!</span></h2>
+                            <p class="text-slate-400 text-xs sm:text-sm mt-2 leading-relaxed">Learn premium technology and business courses structured fully in your language.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="max-w-7xl mx-auto px-4 py-16">
+                <!-- Courses Dynamic Grid -->
+                <div id="course-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Dynamically populated -->
+                </div>
+            </section>
+            
+            <section class="bg-slate-900 border-t border-slate-800 py-16 px-4 text-center">
+                <div class="max-w-3xl mx-auto">
+                    <h3 class="text-xl sm:text-2xl font-black text-white mb-6">
+                        <span class="lang-content-om">Kaffaltii fi Gargaarsa</span>
+                        <span class="lang-content-both-slash">/</span>
+                        <span class="lang-content-en">Payment & Support</span>
                     </h3>
-                    <div class="h-1.5 w-16 bg-amber-400 mx-auto mt-3 rounded-full"></div>
-                    <p class="text-slate-400 text-xs sm:text-sm mt-3.5 max-w-xl mx-auto leading-relaxed font-light">
-                        Kaffaltii salphaa herrega CBE fi Telebirr kaffaltii 200 Birr qofaan barnoota ununfataa guutuu argadhaa. <br>
-                        Obtain complete locked educational materials and lessons for a nominal fee of exactly 200 Birr per academy.
-                    </p>
-                </div>
-
-                <!-- CARDS GRID CONTAINER -->
-                <div id="courses-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- Dynamic client inject goes here -->
-                </div>
-
-            </section>
-
-            <!-- SUPPORT AND DOMESTIC BANKING LOGISTICS -->
-            <section id="payment-information" class="bg-slate-900/40 border-y border-slate-800/80 py-16 px-4">
-                <div class="max-w-6xl mx-auto">
                     
-                    <div class="text-center mb-12">
-                        <span class="text-[10px] font-black text-amber-400 uppercase tracking-widest bg-amber-400/10 px-3.5 py-1.5 rounded-full border border-amber-400/20 font-mono">
-                            VERIFICATION / MIRKANEESSA
-                        </span>
-                        <h3 class="text-2xl font-black text-white mt-4 tracking-tight">
-                            Kaffaltii fi Quunnamtii / Domestic Booking & support Desk
-                        </h3>
-                    </div>
-
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                        <!-- Banking Addresses side -->
-                        <div class="space-y-6">
-                            
-                            <!-- CBE Card -->
-                            <div class="flex gap-4 bg-slate-900 border border-slate-800 p-5 rounded-2xl select-all relative hover:border-slate-755 transition">
-                                <span class="absolute right-3.5 top-3.5 text-[8px] bg-purple-500/10 border border-purple-500/20 text-purple-300 font-mono py-0.5 px-2 rounded-full font-bold">200 Birr</span>
-                                <div class="w-12 h-12 bg-purple-500/10 text-purple-400 border border-purple-500/25 rounded-xl flex items-center justify-center text-lg shrink-0">
-                                    <i class="fa-solid fa-building-columns"></i>
-                                </div>
-                                <div>
-                                    <p class="text-[9px] text-purple-400 font-extrabold uppercase tracking-wider font-mono">Commercial Bank of Ethiopia (CBE)</p>
-                                    <p class="text-lg font-black text-white mt-1 font-mono tracking-wider">1000755134701</p>
-                                    <p class="text-xs text-slate-400 mt-0.5">Account holder: <span class="font-bold text-white">Amanuel</span></p>
-                                </div>
-                            </div>
-
-                            <!-- Telebirr Card -->
-                            <div class="flex gap-4 bg-slate-900 border border-slate-800 p-5 rounded-2xl select-all relative hover:border-slate-755 transition">
-                                <span class="absolute right-3.5 top-3.5 text-[8px] bg-amber-400/10 border border-amber-400/20 text-amber-300 font-mono py-0.5 px-2 rounded-full font-bold">200 Birr</span>
-                                <div class="w-12 h-12 bg-amber-400/10 text-amber-400 border border-amber-400/25 rounded-xl flex items-center justify-center text-lg shrink-0">
-                                    <i class="fa-solid fa-mobile-screen-button"></i>
-                                </div>
-                                <div>
-                                    <p class="text-[9px] text-amber-400 font-extrabold uppercase tracking-wider font-mono">Telebirr Mobile Payment</p>
-                                    <p class="text-lg font-black text-white mt-1 font-mono tracking-wider">0967145146</p>
-                                    <p class="text-xs text-slate-400 mt-0.5">Account name: <span class="font-bold text-white">Amanuel Harar</span></p>
-                                </div>
-                            </div>
-
-                            <!-- Contact metrics detail -->
-                            <div class="bg-slate-950 border border-slate-850 p-5 rounded-2xl space-y-3 font-mono text-xs text-slate-300">
-                                <div class="flex items-center gap-2.5">
-                                    <i class="fa-solid fa-phone text-emerald-400 shrink-0 w-4"></i>
-                                    <span>Hotline Call / Bilbila Support: <b class="text-white">0967145146</b></span>
-                                </div>
-                                <div class="flex items-center gap-2.5">
-                                    <i class="fa-regular fa-envelope text-blue-400 shrink-0 w-4"></i>
-                                    <span>Email Supportsupport support: <b class="text-white">dhiirakoo@gmail.com</b></span>
-                                </div>
-                                <div class="flex items-center gap-2.5">
-                                    <i class="fa-brands fa-telegram text-sky-400 shrink-0 w-4 text-sm animate-pulse"></i>
-                                    <span>Receipt Validation on Telegram: <a href="https://t.me/Amanuel_Harar" target="_blank" class="text-blue-400 hover:underline">@Amanuel_Harar</a></span>
-                                </div>
-                            </div>
-
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
+                        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800">
+                            <i class="fa-solid fa-building-columns text-purple-400 text-xl mb-2 block"></i>
+                            <p class="text-xs text-purple-400 font-bold uppercase tracking-wider">CBE</p>
+                            <p class="text-lg sm:text-xl font-black text-white tracking-widest font-mono">1000755134701</p>
+                            <p class="text-xs text-slate-400 mt-1">Amanuel</p>
                         </div>
-
-                        <!-- Right direct advisory messaging -->
-                        <div class="bg-slate-900 border border-slate-800 p-6 sm:p-8 rounded-3xl">
-                            <h4 class="text-lg font-black text-white border-b border-slate-800 pb-3 mb-6 flex items-center gap-2">
-                                <i class="fa-regular fa-comment-dots text-blue-500"></i>
-                                <span>Ergaa Nuuf Ergaa / Send Advisory Message</span>
-                            </h4>
-
-                            <form id="standalone-support-form" onsubmit="handleSupportForm(event)" class="space-y-4">
-                                <div id="support-alert" class="hidden p-3 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold rounded-xl text-center"></div>
-                                <div>
-                                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-1.5 font-mono">Full Name / Maqaa</label>
-                                    <input type="text" id="sup-name" required class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl outline-none text-xs sm:text-sm text-white focus:border-blue-500 transition-colors font-medium animate-none" placeholder="Amanuel">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-1.5 font-mono">Email Address / Imeeli</label>
-                                    <input type="email" id="sup-email" required class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl outline-none text-xs sm:text-sm text-white focus:border-blue-500 transition-colors font-medium" placeholder="example@gmail.com">
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-black uppercase text-slate-400 mb-1.5 font-mono">Message Contents / Ergaa Kee</label>
-                                    <textarea id="sup-msg" rows="3" required class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl outline-none text-xs sm:text-sm text-white focus:border-blue-500 transition-colors font-medium font-sans" placeholder="Describe your question or message..."></textarea>
-                                </div>
-                                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold uppercase py-3 rounded-xl shadow-md cursor-pointer transition text-xs font-mono tracking-wider">
-                                    Send Advisory Message
-                                </button>
-                            </form>
+                        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800">
+                            <i class="fa-solid fa-mobile-screen-button text-amber-400 text-xl mb-2 block"></i>
+                            <p class="text-xs text-amber-400 font-bold uppercase tracking-wider">Telebirr / Phone</p>
+                            <p class="text-lg sm:text-xl font-black text-white tracking-widest font-mono">0967145146</p>
+                            <p class="text-xs text-slate-400 mt-1">Amanuel Harar</p>
                         </div>
                     </div>
-
+                    
+                    <div class="mt-8 bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 text-sm text-blue-300">
+                        <p class="mb-2"><strong>Telegram Support & Validation:</strong> <a href="https://t.me/Amanuel_Harar" target="_blank" class="underline font-bold hover:text-blue-100">@Amanuel_Harar</a></p>
+                        <p class="text-xs">
+                            <span class="lang-content-om">Gatiin koorsii hundaaf 200 Birr qofa.</span>
+                            <span class="lang-content-both-slash">|</span>
+                            <span class="lang-content-en">All courses are a flat rate of 200 Birr.</span>
+                        </p>
+                    </div>
                 </div>
             </section>
-
         </div>
 
-        <!-- ACTIVE CLASSROOM WORKSPACE VIEW -->
-        <div id="classroom-player-view" class="hidden transition-all duration-300 py-8 px-4">
-            <div class="bg-slate-900 border border-slate-800/80 rounded-3xl max-w-6xl mx-auto overflow-hidden shadow-2xl">
-                
-                <!-- Player Banner Header -->
-                <div class="bg-slate-950 p-5 sm:px-8 border-b border-slate-850 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                    <div class="flex items-center gap-4">
-                        <button onclick="navigateAndReset()" class="p-2 bg-slate-900 hover:bg-slate-850 text-slate-300 border border-slate-800 rounded-xl cursor-pointer">
-                            <i class="fa-solid fa-arrow-left"></i>
-                        </button>
-                        <div>
-                            <span class="text-[9px] text-amber-400 font-extrabold uppercase tracking-widest bg-amber-400/10 px-2 py-0.5 rounded border border-amber-400/20 font-mono">CLASSROOM WORKSPACE</span>
-                            <h3 id="classroom-course-title" class="text-xl font-black text-white mt-1">Video Editing</h3>
-                        </div>
+        <!-- 2. CLASSROOM VIEW -->
+        <div id="view-classroom" class="view-section w-full max-w-7xl mx-auto px-4 py-8">
+            <button onclick="navigateTo('home')" class="mb-4 text-slate-400 hover:text-white transition flex items-center gap-2 text-sm font-bold">
+                <i class="fa-solid fa-arrow-left"></i> 
+                <span class="lang-content-om">Duubaitti</span>
+                <span class="lang-content-both-slash">/</span>
+                <span class="lang-content-en">Back</span>
+            </button>
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
+                <div class="flex-1 p-0 md:p-6 md:border-r border-slate-800 flex flex-col">
+                    <div class="aspect-video bg-black w-full relative sm:rounded-xl overflow-hidden shadow-lg border border-slate-950">
+                        <!-- Standard embedded sample video for all -->
+                        <iframe id="vid-frame" class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/Yp95v_iW_y8" frameborder="0" allowfullscreen></iframe>
                     </div>
-                    <div class="text-right">
-                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider font-mono">PROGRESS PERCENTAGE</p>
-                        <p id="classroom-progress-badge" class="text-xs sm:text-sm font-black text-emerald-400 font-mono">0 of 3 done (0%)</p>
+                    <div class="p-4 sm:p-0 sm:pt-6">
+                        <h3 id="class-title" class="text-xl sm:text-2xl font-black text-white">Lesson Title</h3>
+                        <p class="text-xs text-slate-400 mt-2 flex flex-col sm:flex-row gap-2 sm:gap-6">
+                            <span class="lang-content-om" id="class-desc-om">Ibsa qo'annoo kanaa asitti barreeffama...</span>
+                            <span class="lang-content-en" id="class-desc-en">Description for the lesson will be provided here...</span>
+                        </p>
                     </div>
                 </div>
-
-                <!-- Classroom layout -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 min-h-[500px]">
-                    
-                    <!-- Main player screen -->
-                    <div class="lg:col-span-2 p-5 sm:p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-slate-800">
-                        <div>
-                            <!-- Video wrapper -->
-                            <div class="relative w-full aspect-video rounded-2xl bg-black overflow-hidden border border-slate-950">
-                                <iframe id="classroom-iframe" src="" class="absolute inset-0 w-full h-full" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </div>
-
-                            <!-- Title and progress CTA -->
-                            <div class="mt-6">
-                                <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-4">
-                                    <div id="classroom-lesson-title-block">
-                                        <h4 id="classroom-lesson-title" class="text-lg font-black text-white">Timeline Cuts</h4>
-                                        <p id="classroom-lesson-duration" class="text-[10px] text-slate-400 mt-1 font-mono"><i class="fa-regular fa-clock text-blue-400 mr-1"></i>Duration: 12 min</p>
-                                    </div>
-                                    <button onclick="toggleCompletedLessonState()" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold font-mono transition flex items-center gap-1.5 cursor-pointer">
-                                        <i class="fa-regular fa-circle-check"></i>
-                                        <span id="classroom-complete-text">Mark Completed</span>
-                                    </button>
-                                </div>
-
-                                <!-- Course bilingual stacked description elements -->
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 bg-slate-950 text-slate-300 rounded-2xl border border-slate-850 text-xs sm:text-sm shadow-inner leading-relaxed select-text">
-                                    <div class="border-b md:border-b-0 md:border-r border-slate-850 pb-3 md:pb-0 md:pr-4">
-                                        <span class="text-[9px] font-black uppercase text-amber-500 font-mono block mb-1.5">AFAAN OROMOO</span>
-                                        <p id="classroom-desc-om" class="text-slate-200 font-medium"></p>
-                                    </div>
-                                    <div class="md:pl-2">
-                                        <span class="text-[9px] font-black uppercase text-blue-400 font-mono block mb-1.5">ENGLISH LANGUAGE</span>
-                                        <p id="classroom-desc-en" class="text-slate-350 font-light"></p>
-                                    </div>
-                                </div>
-
-                                <!-- Code snippets and guide logs -->
-                                <div class="mt-6">
-                                    <h5 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 font-mono">LECTURE GUIDE NOTES & PRACTICE WORKFLOWS</h5>
-                                    <pre class="bg-black/90 font-mono text-xs text-emerald-400 p-5 rounded-2xl border border-slate-950 overflow-x-auto select-all leading-relaxed whitespace-pre-wrap font-semibold" id="classroom-notes"></pre>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Congratulations finished panel -->
-                        <div id="classroom-finished-banner" class="hidden mt-8 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/30 p-5 rounded-2xl flex items-center gap-4">
-                            <div class="w-11 h-11 bg-emerald-500 text-slate-950 rounded-xl flex items-center justify-center text-lg shrink-0 shadow-lg select-none">
-                                <i class="fa-solid fa-trophy"></i>
-                            </div>
-                            <div>
-                                <h5 class="text-sm font-black text-emerald-400">Gariidha! Bagas Gammaddan / Congratulations Course Completed!</h5>
-                                <p class="text-xs text-slate-300 mt-0.5 leading-relaxed font-light">You have mastered all curriculum chapters! Translate these high-value techniques into client professional assets!</p>
-                            </div>
-                        </div>
+                <div class="w-full md:w-80 bg-slate-950 p-4 sm:p-6 shrink-0 flex flex-col">
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">
+                        <span class="lang-content-om">Sillaabasii</span>
+                        <span class="lang-content-both-slash">/</span>
+                        <span class="lang-content-en">Syllabus</span>
+                    </h4>
+                    <div id="class-sidebar-list" class="flex flex-col gap-2 overflow-y-auto">
+                        <!-- Dynamic Lessons List here -->
                     </div>
-
-                    <!-- Sidebar outline chapters checklist -->
-                    <div class="bg-slate-950 p-5 sm:p-6 flex flex-col justify-between">
-                        <div>
-                            <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-4 font-mono select-none">Course Syllabus Outline</p>
-                            <div id="classroom-sidebar-list" class="space-y-3">
-                                <!-- Dynamic sidebar nodes inject here -->
-                            </div>
-                        </div>
-
-                        <!-- Help box redirect -->
-                        <div class="mt-8 bg-slate-900 border border-slate-800 p-4.5 rounded-2xl text-xs select-none">
-                            <p class="font-bold text-blue-400">Need immediate validation?</p>
-                            <p class="text-slate-400 mt-1 leading-normal font-light">Directly submit receipts to Amanuel Harar on Telegram for faster unlocking actions.</p>
-                            <a href="https://t.me/Amanuel_Harar" target="_blank" class="mt-3.5 inline-flex items-center gap-1.5 text-amber-400 hover:underline font-extrabold font-mono">
-                                <span>CONTACT TELEGRAM LINK</span>
-                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-                            </a>
-                        </div>
-                    </div>
-
                 </div>
-
             </div>
         </div>
 
-        <!-- SPECIAL ADMINISTRATIVE SIDE BAR OVERLAY -->
-        <div id="admin-view-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-xs z-50 flex justify-end">
-            <div class="bg-slate-900 w-full max-w-xl h-full border-l border-slate-800 shadow-2xl flex flex-col justify-between overflow-hidden">
+        <!-- 3. ADMIN VIEW -->
+        <div id="view-admin" class="view-section w-full max-w-5xl mx-auto px-4 py-8">
+            <button onclick="navigateTo('home')" class="mb-4 text-slate-400 hover:text-white transition flex items-center gap-2 text-sm font-bold">
+                <i class="fa-solid fa-arrow-left"></i> Home
+            </button>
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                <h3 class="text-2xl font-black text-white mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-amber-400"></i> Admin Dashboard
+                </h3>
+                <p class="text-sm text-slate-400 mb-6">Verify and approve student payment tickets here.</p>
                 
-                <div class="bg-slate-950 p-5 flex justify-between items-center shrink-0 border-b border-slate-800">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 bg-amber-400/10 text-amber-400 border border-amber-400/20 rounded-xl flex items-center justify-center text-base">
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
-                        <div>
-                            <h4 class="text-base font-black text-white font-mono">ADMIN AUDIT GATE</h4>
-                            <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider font-mono">Verify and approve student receipt tickers</p>
-                        </div>
-                    </div>
-                    <button onclick="toggleAdminView()" class="p-2 rounded-xl bg-slate-900 text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-300">
+                        <thead class="bg-slate-950 text-slate-400 text-xs uppercase font-bold border-b border-slate-800">
+                            <tr>
+                                <th class="px-4 py-3">Student</th>
+                                <th class="px-4 py-3">Course</th>
+                                <th class="px-4 py-3">Gateway</th>
+                                <th class="px-4 py-3">Ref ID</th>
+                                <th class="px-4 py-3">Status</th>
+                                <th class="px-4 py-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-tickets-table" class="divide-y divide-slate-800/60">
+                            <!-- Populated dynamically -->
+                            <tr><td colspan="6" class="px-4 py-8 text-center text-slate-500">Loading tickets...</td></tr>
+                        </tbody>
+                    </table>
                 </div>
-
-                <!-- Guidance directive -->
-                <div class="bg-amber-600/10 border-b border-amber-500/20 text-amber-300 p-4 text-xs font-semibold leading-relaxed flex gap-2 w-full shrink-0">
-                    <i class="fa-solid fa-triangle-exclamation mt-0.5 shrink-0"></i>
-                    <div>
-                        <p class="uppercase font-mono text-[9px] tracking-wider mb-0.5">Admin Desk Rules:</p>
-                        <p class="font-light text-slate-300">Setting a submitted payment ticket's status to <b>Approved</b> immediately unlocks the student's license.</p>
-                    </div>
-                </div>
-
-                <!-- Admin tickets loop list -->
-                <div class="flex-1 overflow-y-auto p-5 space-y-4">
-                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest font-mono mb-2">Student Application Tickers</p>
-                    <div id="admin-tickets-list" class="space-y-3">
-                        <!-- Dynamic tickets inject -->
-                    </div>
-                </div>
-
-                <div class="bg-slate-950 p-4 border-t border-slate-850 shrink-0">
-                    <button onclick="toggleAdminView()" class="w-full bg-slate-900 hover:bg-slate-850 text-white font-black uppercase text-xs py-3 tracking-widest rounded-xl hover:text-white cursor-pointer border border-slate-800">
-                        Close Admin Window
-                    </button>
-                </div>
-
             </div>
         </div>
-
-        <!-- AUTH MODAL -->
-        <div id="auth-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-            <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-sm w-full p-6 relative shadow-2xl overflow-hidden text-center">
-                <button onclick="hideModal('auth-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 bg-slate-950 rounded-full transition cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
-                
-                <div class="w-11 h-11 bg-blue-500/10 text-blue-400 rounded-2xl flex items-center justify-center text-lg mx-auto mb-4 border border-blue-500/20">
-                    <i class="fa-regular fa-user"></i>
-                </div>
-                
-                <h4 id="auth-modal-title" class="text-base font-black text-white font-mono uppercase tracking-wider">Sign In / Seeni Account</h4>
-                <p id="auth-modal-subtitle" class="text-xs text-slate-400 mt-2 font-light">Join the Amoo Academy interactive classroom to start learning.</p>
-
-                <!-- Helpful credentials prefill block -->
-                <div class="my-4.5 p-3.5 bg-blue-500/10 border border-blue-500/25 rounded-xl text-left text-[11px] text-blue-300 leading-normal">
-                    <p class="font-extrabold uppercase font-mono tracking-wider mb-0.5"><i class="fa-solid fa-circle-exclamation mr-1"></i>Owner Admin Logging:</p>
-                    <p class="font-light text-slate-400">Log in using email <b class="text-white select-all">dhiirakoo@gmail.com</b> and any password (6+ chars) to trigger high-tier admin desk parameters immediately.</p>
-                </div>
-
-                <form onsubmit="handleAccountAuth(event)" class="space-y-4 text-left font-mono text-xs">
-                    <div id="auth-error" class="hidden p-3 bg-red-500/10 border border-red-500/20 text-red-400 font-bold rounded-xl text-center"></div>
-                    <div>
-                        <label class="block text-[8px] font-black uppercase text-slate-400 mb-1.5 tracking-wider">Email Address</label>
-                        <input type="email" id="auth-email" required class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl outline-none text-white focus:border-blue-500 font-medium" placeholder="student@gmail.com">
-                    </div>
-                    <div>
-                        <label class="block text-[8px] font-black uppercase text-slate-400 mb-1.5 tracking-wider">Password</label>
-                        <input type="password" id="auth-pass" required class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl outline-none text-white focus:border-blue-500 font-medium" placeholder="••••••••">
-                    </div>
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-3 uppercase tracking-widest rounded-xl transition cursor-pointer mt-4">
-                        Proceed / Seeni
-                    </button>
-                </form>
-
-                <p onclick="toggleAuthSignType()" id="auth-toggle-tip" class="text-[11px] text-amber-400 hover:underline mt-5 cursor-pointer font-semibold uppercase tracking-wider font-mono">Don't have an account yet? Create Account instead</p>
-            </div>
-        </div>
-
-        <!-- PAYMENT CODE MODAL -->
-        <div id="payment-modal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-            <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-sm w-full p-6 relative shadow-2xl overflow-hidden text-center">
-                <button onclick="hideModal('payment-modal')" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1 bg-slate-950 rounded-full transition cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
-                
-                <div class="w-11 h-11 bg-amber-400/10 text-amber-400 border border-amber-400/20 rounded-2xl flex items-center justify-center text-lg mx-auto mb-4">
-                    <i class="fa-solid fa-receipt"></i>
-                </div>
-
-                <h4 class="text-base font-black text-white font-mono uppercase tracking-wider">Confirm Course Ticket</h4>
-                <p class="text-xs text-slate-400 mt-2 font-light">Transfer exactly <strong class="text-white">200 Birr</strong> to the selected address below, then submit the confirmation transaction code.</p>
-
-                <!-- Payment target toggle structures -->
-                <form onsubmit="handleReceiptSubmit(event)" class="text-left font-mono text-xs mt-5 space-y-4">
-                    <div class="grid grid-cols-2 gap-3 pb-1 select-none">
-                        <div onclick="setPayMethod('CBE')" id="method-cbe" class="p-3 rounded-2xl border border-blue-500/40 bg-blue-500/10 text-blue-300 text-center cursor-pointer transition">
-                            <i class="fa-solid fa-building-columns block mb-1"></i>
-                            <span class="text-[9px] font-black uppercase">CBE Account</span>
-                        </div>
-                        <div onclick="setPayMethod('Telebirr')" id="method-telebirr" class="p-3 rounded-2xl border border-slate-800 bg-slate-950 text-slate-400 text-center cursor-pointer transition">
-                            <i class="fa-solid fa-wallet block mb-1"></i>
-                            <span class="text-[9px] font-black uppercase">Telebirr Mobile</span>
-                        </div>
-                    </div>
-
-                    <!-- Selected recipient coordinate details -->
-                    <div class="bg-black/90 font-mono text-center p-4 rounded-xl border border-slate-950 text-white select-all">
-                        <p class="text-[8px] text-slate-550 uppercase tracking-widest font-mono">RECIPIENT BANKING DETAIL</p>
-                        <p id="recip-org" class="text-[10px] text-blue-400 font-extrabold uppercase mt-1">CBE Commercial Bank</p>
-                        <p id="recip-account" class="text-base font-black tracking-widest mt-0.5 text-amber-400">1000755134701</p>
-                        <span class="text-[8px] text-slate-500 block font-light italic mt-1 font-sans">Beneficiary Name: Amanuel</span>
-                    </div>
-
-                    <div>
-                        <label class="block text-[8px] font-black uppercase text-slate-400 mb-1.5 tracking-wider">Transaction Code Ref *</label>
-                        <input type="text" id="pay-ref" required class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl outline-none text-white focus:border-blue-500 font-bold uppercase tracking-wider text-center" placeholder="e.g. FT26066H9410">
-                    </div>
-
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-3 uppercase tracking-widest rounded-xl transition cursor-pointer font-mono text-center">
-                        Submit verification Code
-                    </button>
-                </form>
-            </div>
-        </div>
-
     </main>
 
-    <!-- FOOTER -->
-    <footer class="bg-slate-950 py-6 px-4 border-t border-slate-800 select-none">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-mono text-slate-500">
-            <p>&copy; 2026 Amoo Academy. <span class="text-amber-500">Bilingual Slate Platform.</span></p>
-            <p>All Rights Reserved. High-contrast Slate Layout.</p>
-        </div>
+    <footer class="bg-slate-950 py-6 px-4 border-t border-slate-800 text-center text-xs font-bold text-slate-500 uppercase tracking-widest mt-auto">
+        &copy; 2026 Amoo Academy | 200 Birr Flat Rate
     </footer>
 
-    <!-- LOGICAL CONTROLLER INTERACTION SCRIPTS -->
-    <script>
-        // Clear static course syllabus structures featuring exact 200 Birr
-        const ACADEMY_COURSES = [
+    <!-- PAYMENT / TICKETING MODAL -->
+    <div id="modal-payment" class="modal fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl w-full max-w-sm relative">
+            <button onclick="closeModal('modal-payment')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h3 class="text-lg font-black text-white mb-1 uppercase tracking-wider text-center">
+                <span class="lang-content-om">Kaffaltii Mirkaneessi</span>
+                <span class="lang-content-en hidden">Confirm Payment</span>
+            </h3>
+            <p class="text-xs text-slate-400 text-center mb-6">
+                <span class="lang-content-om">200 Birr kaffaluun ragaa ergaa.</span>
+                <span class="lang-content-en hidden">Submit receipt for 200 Birr.</span>
+            </p>
+            
+            <form id="ticket-form" class="space-y-4">
+                <input type="hidden" id="ticket-course-id">
+                
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Payment Method</label>
+                    <select id="ticket-method" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                        <option value="CBE">CBE (1000755134701)</option>
+                        <option value="Telebirr">Telebirr (0967145146)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Transaction Ref Code</label>
+                    <input type="text" id="ticket-ref" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 uppercase font-mono" placeholder="FT1234...">
+                </div>
+                
+                <button type="submit" id="ticket-submit-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm py-2.5 rounded-lg transition uppercase tracking-wider">
+                    Submit Ticket
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FIREBASE AND JS LOGIC -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, getDocs, doc, setDoc, query, where, updateDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        const firebaseConfig = {
+            projectId: "gen-lang-client-0201325615",
+            appId: "1:156949317166:web:986ba10c2c2bd15eb981bf",
+            apiKey: "AIzaSyBpMyUXu6knAOPy169lfXZYNXe1I8IdD34",
+            authDomain: "gen-lang-client-0201325615.firebaseapp.com",
+            storageBucket: "gen-lang-client-0201325615.firebasestorage.app",
+            messagingSenderId: "156949317166"
+        };
+        const firestoreDatabaseId = "ai-studio-b5cb12be-4932-4d50-b621-a600c4f70eb0";
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app, firestoreDatabaseId);
+
+        let currentUser = null;
+        let myTickets = {}; // courseId -> status
+        let unsubscribeAdmin = null;
+
+        // --- COURSES DATA ---
+        const courses = [
             {
                 id: "video-editing",
-                title: "Video Editing Masterclass",
-                titleOm: "Gulaala Viidiyoo (Video Editing)",
-                icon: "fa-video",
-                bgGradient: "from-blue-500/5 to-indigo-500/5",
-                borderColor: "border-blue-500/20",
-                textColor: "text-blue-400",
-                descriptionOm: "Adeemsa guutuu viidiyoo edit gochuu, kutaalee fi bifa bareedaan qopheessuu bilisaan baradhaa. Of danda'anii viidiyoolee TikTok, YouTube fi daldalaa hojjechuu.",
-                descriptionEn: "Master professional video editing workflows, cuts, effects, and cinematic storytelling. Learn to build pristine content for TikTok, YouTube, and corporate clients.",
-                price: 200,
-                lessons: [
-                    {
-                        id: "ve-l1",
-                        title: "Professional Timeline & Video Cuts",
-                        titleOm: "Timeline fi Kutaa Viidiyoo Hojjechuu",
-                        duration: "12 min",
-                        videoUrl: "https://www.youtube.com/embed/Yp95v_iW_y8",
-                        descriptionOm: "Kutaa kana keessatti timeline, bifa guutuu fi dandeettii kutaalee adda addaa viidiyoo (cuts) qulqullinaan hojjechuu baranna.",
-                        descriptionEn: "In this lesson, you will master the editor timeline, ripple edits, slip tools, and how to execute clean jump-cuts and narrative pacing.",
-                        contentOm: "Timeline fi kutaaleen viidiyoo bu'uura video editing ti. Viidiyoo keessan kutaalee barbaadamaa qofa qabuun, kutaalee dadhaboo ta'an irraa fageessuuf jalqaba irraa barattu. CapCut ykn Premiere Pro irratti raawwadha.",
-                        contentEn: "The timeline is your canvas. Clean cuts are the foundation of pacing. You will learn here how to trim useless pauses and align primary A-Roll footage before adding supplementary assets."
-                    },
-                    {
-                        id: "ve-l2",
-                        title: "Sound Leveling & Dialog Audio Tuning",
-                        titleOm: "Sagalee fi BGM Gulaaluu",
-                        duration: "15 min",
-                        videoUrl: "https://www.youtube.com/embed/coqit3Jb6K4",
-                        descriptionOm: "Sagaleen viidiyoo keessa jiru kutaawwan 50% murteessaa dha. Sound leveling fi fiilteroota sagalee baradhaa.",
-                        descriptionEn: "Audio is 50% of the video experience. Gain deep knowledge on volume leveling, noise reduction gates, and mixing custom background tracks.",
-                        contentOm: "BGM (background music) fi sagaleen nama dubbatu wal madaaluu qaba. Sagalee dubbataa -6dB, background gadi bu'aa -25dB ta'uu qaba.",
-                        contentEn: "Ensure clear dialogue levels at around -6dB to -12dB while docking ambient background music lower. Apply dynamic compression to smooth sudden vocal changes."
-                    },
-                    {
-                        id: "ve-l3",
-                        title: "Cinematic Color Styles & LUTs",
-                        titleOm: "Halluu Culukkisiisuu (Color Grading)",
-                        duration: "18 min",
-                        videoUrl: "https://www.youtube.com/embed/8o9E0fclBw0",
-                        descriptionOm: "Halluu viidiyoo keessanii bifa cinematic fi bifa daldalaa miidhagaa ta'een qopheessuu (Lumetri Color ykn CapCut Filters fayyadamuun).",
-                        descriptionEn: "Transform flat raw video profiles into punchy visual experiences using primary exposure adjustments and custom LUT styles.",
-                        contentOm: "Exposure, Whites fi Blacks sirreessuun halluu viidiyoo bareechina. Bifa gammachuu, dhiphina ykn moodii daldalaa halluun ifatti argisiisa.",
-                        contentEn: "Color grading controls the narrative mood. Master simple exposure sweeps, white balance highlights, and warm skin tone tracking to look professional."
-                    }
-                ]
+                icon: "fa-video", bg: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+                om: { title: "Gulaala Viidiyoo (Video Editing)", desc: "Adeemsa guutuu viidiyoo edit gochuu baradhaa." },
+                en: { title: "Video Editing Masterclass", desc: "Master professional cinematic video workflows." }
             },
             {
                 id: "graphic-design",
-                title: "Graphic Design Studio",
-                titleOm: "Dizaayinii Girafiksii (Graphic Design)",
-                icon: "fa-palette",
-                bgGradient: "from-purple-500/5 to-pink-500/5",
-                borderColor: "border-purple-500/20",
-                textColor: "text-purple-400",
-                descriptionOm: "Bifa, halluu, fi dizaayiniiwwan adda addaa dandeettii daldala keessanii mijeessan uumaa. Logo, poster fi qopheessuu dandeettii argadhaa.",
-                descriptionEn: "Create amazing visuals, brand identities, and commercial layouts from scratch. Learn Canva, Photoshop guidelines, and design principles.",
-                price: 200,
-                lessons: [
-                    {
-                        id: "gd-l1",
-                        title: "Visual Hierarchy & Grid Layouts",
-                        titleOm: "Hierarchy fi Qubee Dizaayinii",
-                        duration: "10 min",
-                        videoUrl: "https://www.youtube.com/embed/YqQx75OPRa0",
-                        descriptionOm: "Dizaayiniin keessan dubbisaaf akka mijaahuuf qubeewwan gurguddoo fi xixinnoo bifa mijaawaan lafa kaahuu baradhaa.",
-                        descriptionEn: "Learn the golden rule of layouts: positioning visual priorities, sizing typography scales, and incorporating white space beautifully.",
-                        contentOm: "Visual hierarchy dizaayinii tokko keessatti ija namaa jalqaba maaltu akka argu mureetessa. Wantoota barbaachisoo gurguddeessi, kaan ammoo bifa miidhagaaf gad-qabi.",
-                        contentEn: "Hierarchy points your audience's focus to what matters first. Utilize absolute size contrasts, rich weights, and negative spacing so layouts feel premium."
-                    },
-                    {
-                        id: "gd-l2",
-                        title: "Color Psychology & Brand Palettes",
-                        titleOm: "Halluu fi Ergaa Isaa (Color Theory)",
-                        duration: "14 min",
-                        videoUrl: "https://www.youtube.com/embed/L13UaRshc68",
-                        descriptionOm: "Hirmaattota daldalaa hawachuuf halluu kam fayyadamuun akkamitti akka miira daldalaa uumu irratti barumsa bal'aa.",
-                        descriptionEn: "Unlock the emotional impact of major colors and construct balanced 60-30-10 palette rules for cohesive branding layouts.",
-                        contentOm: "Halluun tokko ifatti daldala keessan uummataan beeksisa. Fkn: Buluun/Blue amanamummaa argisiisa, Amber ammoo saffisa fi sochingii.",
-                        contentEn: "Colors elicit instant cultural reactions. Combine primary dominants with secondary soft tints, reserving vibrant colors specifically for CTA targets."
-                    },
-                    {
-                        id: "gd-l3",
-                        title: "Logo Masterclass & Brand Elements",
-                        titleOm: "Logo fi Brand Uumuu",
-                        duration: "20 min",
-                        videoUrl: "https://www.youtube.com/embed/K8_YV2C247A",
-                        descriptionOm: "Daldala tokkoof dizaayinii logo salphaa, miidhagaa fi yaadatamuu danda'u dizaayini gochuu fi kaardii daldalaa qopheessuu.",
-                        descriptionEn: "Learn to design highly memorable, clean, minimalistic logo marks, vector illustrations, and interactive commercial mockups.",
-                        contentOm: "Logo gaariin haaluma salphaan kan yaadatamuu fi dandeettii daldalaa keessan kan mul'isuu dha. Vector formats mijeessuu dagatin.",
-                        contentEn: "A logo must be scalable, clear, and contextually rich. Avoid complex textures; opt for elegant geometric emblems and responsive type marks."
-                    }
-                ]
+                icon: "fa-palette", bg: "bg-purple-500/10 text-purple-400 border-purple-500/20",
+                om: { title: "Dizaayinii Girafiksii (Design)", desc: "Logo fi dizaayinii daldalaa salphaatti uumaa." },
+                en: { title: "Graphic Design Studio", desc: "Create amazing layouts and visual brands." }
             },
             {
                 id: "prompt-engineering",
-                title: "Prompt Engineering Academy",
-                titleOm: "Afaan AI ykn Prompting (Prompt Engineering)",
-                icon: "fa-microchip",
-                bgGradient: "from-emerald-500/5 to-teal-500/5",
-                borderColor: "border-emerald-500/20",
-                textColor: "text-emerald-400",
-                descriptionOm: "Humna AI fayyadamanii hojii daldalaa saffisiisuuf bifa qulqulluun ajaja ykn prompt barreessuu baradhaa. ChatGPT fi Gemini saphlaan fayyadamaa.",
-                descriptionEn: "Unlock AI's maximum potential by learning structural prompt strategies, multi-tier execution, and workflows that accelerate your productivity.",
-                price: 200,
-                lessons: [
-                    {
-                        id: "pe-l1",
-                        title: "Structuring Prompts (Role, Task, Context)",
-                        titleOm: "Ajaja AI Bareedaa (Structural Prompting)",
-                        duration: "11 min",
-                        videoUrl: "https://www.youtube.com/embed/0G7jN4G5Sfk",
-                        descriptionOm: "Ajaja AI-f kenninu bifa qorannoo qabuun: Gahee (Role), Hojii (Task), fi Haala (Context) waliin barreessuu baranna.",
-                        descriptionEn: "Learn to command AI systems reliably. Build structured patterns by explicitly assigning roles, clear tasks, target constraints, and fine output templates.",
-                        contentOm: "Gorsa Gaarii: 'Ati dizaayinaridha' (Role), 'Maaloo kaardii qopheessi' (Task), 'Akka kantiinii keenyaaf tolu' (Context). Kanaan bu'aan keessan 10x fooyya'a.",
-                        contentEn: "Never write sloppy queries. Instead: 1) Act as an expert [Role], 2) Generate [Task], 3) Follow these rules/context [Constraints] to lock down formatting."
-                    },
-                    {
-                        id: "pe-l2",
-                        title: "Zero-Shot vs Few-Shot Learning Patterns",
-                        titleOm: "Fakkeenya Kudhannoo (Few-shot Prompting)",
-                        duration: "13 min",
-                        videoUrl: "https://www.youtube.com/embed/bSgZfCHqOTo",
-                        descriptionOm: "AI-f fakkeenya (examples) kennuun akkamitti akka bifa dhumataa sirriitti to'annu bal'inaan barumsichaan gadi fageenyaan ni baranna.",
-                        descriptionEn: "Understand dynamic context injection. Master zero-shot queries and few-shot formatting lists to make model behaviors consistent.",
-                        contentOm: "Few-shot prompting jechuun ajaja keessan keessatti fakkeenyoof gurguddoo 2 ykn 3 AI-f laachuudha. Kanaan AI dandeettii hojii keessanii sirriitti fakaachisa.",
-                        contentEn: "Use Few-shot learning by specifying prefilled input-output pairs inside the prompt. This forces models to strictly mirror the syntax style requested."
-                    },
-                    {
-                        id: "pe-l3",
-                        title: "Automating Tasks & Chain of Thought",
-                        titleOm: "Chain of Thought fi Saffisiisa Hojii",
-                        duration: "16 min",
-                        videoUrl: "https://www.youtube.com/embed/V6N7b8Yn9q8",
-                        descriptionOm: "Prompt 'Sadarkaa irratti sadarkaa xiinxali' fayyadamanii rakkoolee walxaxoo hojjachuu fi bifa bilisa daldalaa saffisiuu.",
-                        descriptionEn: "Improve reasoning accuracy. Master Chain of Thought patterns and build step-by-step guides to solve highly complex tasks.",
-                        contentOm: "AI-n 'Sadarkaa sadarkaan dubbisi/yaadi' yoo ajajame, xiinxala isaa bifa sirrin deebisa. Daataalee daldalaa to'achuuf dandeettii dabalataa baradhu.",
-                        contentEn: "Instructing the AI to 'explain your reasoning step-by-step' triggers Chain of Thought paths, dramatically reducing coding errors and logical loops."
-                    }
-                ]
+                icon: "fa-microchip", bg: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+                om: { title: "Afaan AI ykn Prompting", desc: "ChatGPT fi Gemini sirriitti fayyadamuu." },
+                en: { title: "AI Prompt Engineering", desc: "Unlock AI modeling and step-by-step logic." }
             }
         ];
 
-        // Reactive Application State
-        let currentUser = null; 
-        let enrollments = []; // collection of { enrollmentId, userId, userEmail, courseId, courseName, price, paymentMethod, transactionRef, status }
-        let lessonProgress = []; // list of completed lessonId values
-        
-        let selectedCourseIdToBuy = null;
-        let selectedPaymentGateway = 'CBE';
-        
-        let classroomCourse = null;
-        let classroomActiveLesson = null;
-        
-        let isAuthSignUpPattern = false;
-
-        // Bootstrap on page load
-        function bootstrapDatabase() {
-            const cachedUser = localStorage.getItem('amoo_user');
-            const cachedEnrollments = localStorage.getItem('amoo_enrollments');
-            const cachedProgress = localStorage.getItem('amoo_progress');
-
-            if (cachedUser) {
-                currentUser = JSON.parse(cachedUser);
-            } else {
-                // Auto-create standard logged-in session for dhiirakoo@gmail.com to make review seamless
-                currentUser = {
-                    uid: 'uid_aman_967145',
-                    email: 'dhiirakoo@gmail.com',
-                    displayName: 'Amanuel (Owner)',
-                    role: 'admin'
-                };
-                localStorage.setItem('amoo_user', JSON.stringify(currentUser));
-            }
+        // --- UI LOGIC ---
+        window.setGlobalLang = (mode) => {
+            document.body.classList.remove('lang-om-only', 'lang-en-only', 'lang-both');
+            document.body.classList.add(`lang-${mode}` + (mode === 'both' ? '' : '-only'));
+            document.getElementById('btn-lang-om').className = mode === 'om' ? 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition text-white bg-slate-700' : 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition hover:text-white text-slate-400';
+            document.getElementById('btn-lang-en').className = mode === 'en' ? 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition text-white bg-slate-700' : 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition hover:text-white text-slate-400';
+            document.getElementById('btn-lang-both').className = mode === 'both' ? 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition text-white bg-slate-700' : 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition hover:text-white text-slate-400';
             
-            if (cachedEnrollments) {
-                enrollments = JSON.parse(cachedEnrollments);
-            } else {
-                // Pre-seed an enrollment in completed form for Prompt Engineering
-                enrollments = [
-                    {
-                        enrollmentId: "uid_aman_967145_prompt-engineering",
-                        userId: "uid_aman_967145",
-                        userEmail: "dhiirakoo@gmail.com",
-                        courseId: "prompt-engineering",
-                        courseName: "Prompt Engineering Academy",
-                        price: 200,
-                        paymentMethod: "Telebirr",
-                        transactionRef: "TX_SEED_93021",
-                        status: "approved"
-                    }
-                ];
-                localStorage.setItem('amoo_enrollments', JSON.stringify(enrollments));
-            }
+            const slashes = document.querySelectorAll('.lang-content-both-slash');
+            slashes.forEach(el => el.style.display = (mode === 'both') ? 'inline' : 'none');
             
-            if (cachedProgress) {
-                lessonProgress = JSON.parse(cachedProgress);
+            // Adjust specific blocks that are hidden dynamically within scripts
+            const enBlocks = document.querySelectorAll('.lang-content-en');
+            const omBlocks = document.querySelectorAll('.lang-content-om');
+            if (mode === 'om') {
+                enBlocks.forEach(el => el.classList.add('hidden'));
+                omBlocks.forEach(el => el.classList.remove('hidden'));
+            } else if (mode === 'en') {
+                omBlocks.forEach(el => el.classList.add('hidden'));
+                enBlocks.forEach(el => el.classList.remove('hidden'));
             } else {
-                lessonProgress = ["pe-l1"]; // seed partial progress
-                localStorage.setItem('amoo_progress', JSON.stringify(lessonProgress));
-            }
-
-            updateUserShellNavbar();
-            renderCatalogGrid();
-            renderAdminDashboardList();
-        }
-
-        // Navbar UI synchronous render
-        function updateUserShellNavbar() {
-            const authBlock = document.getElementById('auth-session-block');
-            const adminTrigger = document.getElementById('admin-trigger-panel');
-
-            if (currentUser) {
-                const isOwner = currentUser.email === "dhiirakoo@gmail.com";
-                authBlock.innerHTML = `
-                    <div class="flex items-center gap-2">
-                        <div class="hidden sm:flex flex-col items-end text-right select-none">
-                            <span class="text-xs font-black text-white">${currentUser.displayName || currentUser.email.split('@')[0]}</span>
-                            <span class="text-[9px] text-slate-400 capitalize font-mono font-bold tracking-wider">${isOwner ? 'Admiinii / Admin' : 'Barataa / Student'}</span>
-                        </div>
-                        <button onclick="handleLogoutAction()" class="p-2 bg-slate-800 text-slate-300 hover:text-red-400 border border-slate-700 hover:bg-slate-800/80 rounded-xl transition cursor-pointer" title="Log Out / Ba'i">
-                            <i class="fa-solid fa-arrow-right-from-bracket text-xs"></i>
-                        </button>
-                    </div>
-                `;
-
-                if (isOwner) {
-                    adminTrigger.classList.remove('hidden');
-                } else {
-                    adminTrigger.classList.add('hidden');
-                }
-            } else {
-                adminTrigger.classList.add('hidden');
-                authBlock.innerHTML = `
-                    <button onclick="showModal('auth-modal')" class="bg-blue-600 hover:bg-blue-500 text-white text-[11px] sm:text-xs font-bold py-1.5 sm:py-2 px-3.5 sm:px-4.5 rounded-xl transition shadow flex items-center gap-1.5 cursor-pointer">
-                        <i class="fa-regular fa-circle-user text-xs"></i>
-                        <span>Seeni / Login</span>
-                    </button>
-                `;
+                omBlocks.forEach(el => el.classList.remove('hidden'));
+                enBlocks.forEach(el => el.classList.remove('hidden'));
             }
         }
 
-        // Render dynamic course collection
-        function renderCatalogGrid() {
-            const container = document.getElementById('courses-grid');
-            if (!container) return;
-
-            let htmlSegment = "";
-            ACADEMY_COURSES.forEach(course => {
-                const enrollment = enrollments.find(e => e.courseId === course.id && e.userId === (currentUser?.uid || ""));
-                const status = enrollment ? enrollment.status : "unauthorized";
-
-                // Generate status badges
-                let badgeMarkup = "";
-                if (status === "approved") {
-                    badgeMarkup = `
-                        <span class="bg-emerald-500/10 text-emerald-450 text-[9px] font-black px-2.5 py-1 rounded-full border border-emerald-550/20 uppercase tracking-widest flex items-center gap-1 font-mono">
-                            <i class="fa-solid fa-unlock text-[8px] animate-pulse"></i>
-                            <span>Bilaaqameera / Unlocked</span>
-                        </span>
-                    `;
-                } else if (status === "pending") {
-                    badgeMarkup = `
-                        <span class="bg-amber-400/10 text-amber-405 text-[9px] font-black px-2.5 py-1 rounded-full border border-amber-405/20 uppercase tracking-widest flex items-center gap-1 font-mono animate-pulse">
-                            <i class="fa-solid fa-hourglass mr-0.5"></i>
-                            <span>Mirkaneessaa / Pending</span>
-                        </span>
-                    `;
-                } else if (status === "rejected") {
-                    badgeMarkup = `
-                        <span class="bg-red-500/10 text-red-400 text-[9px] font-black px-2.5 py-1 rounded-full border border-red-500/20 uppercase tracking-widest font-mono">
-                            <span>Kufaa / Declined</span>
-                        </span>
-                    `;
-                } else {
-                    badgeMarkup = `
-                        <span class="bg-slate-950 text-slate-400 text-[9px] font-black px-2.5 py-1 rounded-full border border-slate-800 uppercase tracking-widest flex items-center gap-1 font-mono">
-                            <i class="fa-solid fa-lock text-[8px]"></i>
-                            <span>Kaffaltii / Paid</span>
-                        </span>
-                    `;
-                }
-
-                // Bilingual stacked titles and descriptions
-                const titleBlock = `
-                    <div class="flex flex-col gap-0.5 mt-2">
-                        <span class="text-sm sm:text-base font-black text-slate-100 hover:text-blue-400 transition truncate">${course.titleOm}</span>
-                        <span class="text-xs text-slate-500 truncate font-semibold font-mono uppercase tracking-wider">${course.title}</span>
-                    </div>
-                `;
-
-                const descBlock = `
-                    <div class="space-y-2 text-[11px] bg-slate-950/70 p-3.5 rounded-2xl border border-slate-850 my-4 text-slate-400 font-light leading-relaxed">
-                        <p class="line-clamp-3"><span class="text-amber-500 font-mono font-bold tracking-wider mr-1">OM:</span>${course.descriptionOm}</p>
-                        <p class="line-clamp-3 border-t border-slate-850 pt-2"><span class="text-blue-400 font-mono font-bold tracking-wider mr-1">EN:</span>${course.descriptionEn}</p>
-                    </div>
-                `;
-
-                // Sub-chapters syllabus checklist
-                let lessonsHtm = "";
-                course.lessons.forEach((l, ix) => {
-                    lessonsHtm += `
-                        <div class="flex items-start gap-1.5 text-[11px] text-slate-300 leading-normal border-b border-slate-900/40 pb-2 last:border-0 last:pb-0">
-                            <span class="text-[8px] bg-slate-950 font-black border border-slate-850 w-4.5 h-4.5 rounded flex items-center justify-center text-slate-400 shrink-0 font-mono mt-0.5">${ix + 1}</span>
-                            <div class="overflow-hidden w-full">
-                                <p class="truncate font-bold text-slate-200">${l.titleOm}</p>
-                                <p class="truncate font-light text-slate-500 font-mono text-[9px] uppercase tracking-wider">${l.title}</p>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                // Completed progress indicators
-                const courseLessonsIds = course.lessons.map(ls => ls.id);
-                const completedCount = lessonProgress.filter(id => courseLessonsIds.includes(id)).length;
-                const progressPercent = courseLessonsIds.length > 0 ? Math.round((completedCount / courseLessonsIds.length) * 100) : 0;
-
-                let actionFooter = "";
-                if (status === "approved") {
-                    actionFooter = `
-                        <div class="mt-4">
-                            <div class="flex justify-between items-center text-[9px] font-extrabold text-slate-450 font-mono mb-1.5">
-                                <span class="tracking-wider text-slate-400">PROGRESS / XUMURAMEERA</span>
-                                <span>${completedCount}/${courseLessonsIds.length} done (${progressPercent}%)</span>
-                            </div>
-                            <div class="w-full bg-slate-950 h-1.5 rounded-full overflow-hidden mb-3.5 border border-slate-850">
-                                <div class="bg-emerald-500 h-full rounded-full transition-all duration-300" style="width: ${progressPercent}%"></div>
-                            </div>
-                            <button onclick="enterClassroomWorkspace('${course.id}')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider py-3 rounded-xl cursor-pointer shadow-lg shadow-emerald-950/20 active:translate-y-0.5 transition">
-                                <i class="fa-solid fa-circle-play mr-1"></i> Gadi Seeni / Enter Classroom
-                            </button>
-                        </div>
-                    `;
-                } else if (status === "pending") {
-                    actionFooter = `
-                        <div class="mt-4 pt-4 border-t border-slate-850 space-y-2.5">
-                            <p class="text-[9px] text-amber-400 text-center font-bold uppercase tracking-wider font-mono">
-                                <i class="fa-solid fa-spinner fa-spin mr-1"></i>Siriitti ergameera. Admiiniin sa'aatii muraasa keessatti banu!
-                            </p>
-                            <button onclick="requestPaymentSheet('${course.id}')" class="w-full bg-slate-850 hover:bg-slate-800 border border-slate-750 text-slate-200 font-bold text-xs py-2.5 rounded-xl cursor-pointer">
-                                View Submitted Code / Tiketii Ilaali
-                            </button>
-                        </div>
-                    `;
-                } else if (status === "rejected") {
-                    actionFooter = `
-                        <div class="mt-4 pt-4 border-t border-slate-850 space-y-2.5">
-                            <p class="text-[10px] text-red-500 text-center font-bold leading-normal">
-                                Kaffaltiin keessan hin mirkanoofne. Maaloo ragaa sirrii ergaa.
-                            </p>
-                            <button onclick="requestPaymentSheet('${course.id}')" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold text-xs py-2.5 rounded-xl cursor-pointer font-mono tracking-wider">
-                                Resubmit Code / Kaffaltii Irra Ergi
-                            </button>
-                        </div>
-                    `;
-                } else {
-                    actionFooter = `
-                        <div class="flex justify-between items-center mt-5 pt-4 border-t border-slate-850 select-none">
-                            <div>
-                                <span class="text-[8px] text-slate-500 font-black uppercase tracking-widest font-mono">FLAT DISCOUNT RATE</span>
-                                <p class="text-xl font-black text-white font-mono mt-0.5">200 <span class="text-[10px] font-bold text-blue-500 font-sans">Birr</span></p>
-                            </div>
-                            <button onclick="requestPaymentSheet('${course.id}')" class="bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-[11px] py-2.5 px-4.5 rounded-xl uppercase tracking-wider cursor-pointer shadow-lg shadow-blue-950/20 active:translate-y-0.5 transition">
-                                Kaffalii Gadi Seeni / Buy Course
-                            </button>
-                        </div>
-                    `;
-                }
-
-                htmlSegment += `
-                    <div class="bg-slate-900 rounded-3xl border ${course.borderColor} p-6 flex flex-col justify-between hover:shadow-2xl hover:border-slate-700 hover:-translate-y-1 transition duration-300">
-                        <div>
-                            <div class="flex justify-between items-start">
-                                <div class="w-11 h-11 bg-slate-950 text-base rounded-xl border border-slate-800 flex items-center justify-center font-bold ${course.textColor}">
-                                    <i class="fa-solid ${course.icon}"></i>
-                                </div>
-                                ${badgeMarkup}
-                            </div>
-
-                            ${titleBlock}
-                            ${descBlock}
-
-                            <div class="space-y-2 mt-5 bg-slate-950/40 p-4 rounded-2xl border border-slate-850">
-                                <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest font-mono mb-1.5 select-none">chapters list / kutaawwan barumsaa</p>
-                                ${lessonsHtm}
-                            </div>
-                        </div>
-                        ${actionFooter}
-                    </div>
-                `;
-            });
-            container.innerHTML = htmlSegment;
+        window.navigateTo = (view) => {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById(`view-${view}`).classList.add('active');
+            if (view === 'admin') loadAdminDashboard();
         }
 
-        // Active workspace loader
-        function enterClassroomWorkspace(courseId) {
-            if (!currentUser) {
-                showModal('auth-modal');
-                return;
-            }
-            const course = ACADEMY_COURSES.find(c => c.id === courseId);
-            if (!course) return;
+        window.closeModal = (id) => document.getElementById(id).classList.remove('active');
+        window.openModal = (id) => document.getElementById(id).classList.add('active');
 
-            const enrollment = enrollments.find(e => e.courseId === courseId && e.userId === currentUser.uid);
-            if (!enrollment || enrollment.status !== "approved") {
-                alert("Please submit and approve receipt transaction code first.");
-                return;
-            }
-
-            classroomCourse = course;
-            classroomActiveLesson = course.lessons[0] || null;
-
-            document.getElementById('home-view').classList.add('hidden');
-            document.getElementById('classroom-player-view').classList.remove('hidden');
-
-            renderClassroomPlayer();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function navigateAndReset() {
-            classroomCourse = null;
-            classroomActiveLesson = null;
-            document.getElementById('home-view').classList.remove('hidden');
-            document.getElementById('classroom-player-view').classList.add('hidden');
-            renderCatalogGrid();
-        }
-
-        // Render dynamic classroom components
-        function renderClassroomPlayer() {
-            if (!classroomCourse) return;
-
-            // Render header titles
-            document.getElementById('classroom-course-title').innerHTML = `
-                <div class="flex flex-col">
-                    <span class="text-base font-black text-white">${classroomCourse.titleOm}</span>
-                    <span class="text-xs text-slate-450 font-mono font-semibold uppercase tracking-wider mt-0.5">${classroomCourse.title}</span>
-                </div>
-            `;
-            
-            const courseLessonsIds = classroomCourse.lessons.map(ls => ls.id);
-            const compCount = lessonProgress.filter(id => courseLessonsIds.includes(id)).length;
-            const progressPercent = courseLessonsIds.length > 0 ? Math.round((compCount / courseLessonsIds.length) * 100) : 0;
-
-            document.getElementById('classroom-progress-badge').innerText = `${compCount} of ${courseLessonsIds.length} done (${progressPercent}%)`;
-
-            if (progressPercent === 100) {
-                document.getElementById('classroom-finished-banner').classList.remove('hidden');
-            } else {
-                document.getElementById('classroom-finished-banner').classList.add('hidden');
-            }
-
-            // Bind current frame metrics
-            if (classroomActiveLesson) {
-                document.getElementById('classroom-iframe').src = classroomActiveLesson.videoUrl;
-                document.getElementById('classroom-lesson-title').innerHTML = `
-                    <h4 class="text-lg font-black text-slate-100">${classroomActiveLesson.titleOm}</h4>
-                    <p class="text-xs text-slate-400 font-mono font-medium mt-0.5">${classroomActiveLesson.title}</p>
-                `;
-                document.getElementById('classroom-lesson-duration').innerHTML = `<i class="fa-regular fa-clock text-blue-450 mr-1.5"></i>Duration: ${classroomActiveLesson.duration}`;
+        // --- RENDER HOME DASHBOARD ---
+        function renderCourseCards() {
+            const grid = document.getElementById('course-grid');
+            grid.innerHTML = courses.map(c => {
+                let statusBadge = '';
+                let actionBtn = `<button onclick="handleEnrollClick('${c.id}')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2 rounded-lg transition mt-4 text-xs uppercase tracking-wider"><span class="lang-content-om">Galmaa'i (200 Birr)</span><span class="lang-content-both-slash"> / </span><span class="lang-content-en">Enroll (200 Birr)</span></button>`;
                 
-                document.getElementById('classroom-desc-om').innerText = classroomActiveLesson.descriptionOm;
-                document.getElementById('classroom-desc-en').innerText = classroomActiveLesson.descriptionEn;
-
-                // Sync guide script templates
-                document.getElementById('classroom-notes').innerText = `[OM LECTURE NOTES & COMMAND STEPS]\n---\n${classroomActiveLesson.contentOm}\n\n[EN LECTURE NOTES & COMMAND STEPS]\n---\n${classroomActiveLesson.contentEn}`;
-
-                // Sync button text
-                const isCompleted = lessonProgress.includes(classroomActiveLesson.id);
-                document.getElementById('classroom-complete-text').innerText = isCompleted ? "Xumurameera! / Completed!" : "Guyyi Xumure / Mark Completed";
-            }
-
-            // Sidebar outlined components list
-            let sidebarHtm = "";
-            classroomCourse.lessons.forEach((les, index) => {
-                const isSelected = classroomActiveLesson?.id === les.id;
-                const isCompleted = lessonProgress.includes(les.id);
-
-                let statusIndicator = "";
-                if (isCompleted) {
-                    statusIndicator = `<div class="w-6.5 h-6.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-lg flex items-center justify-center text-[10px] shrink-0 font-extrabold font-mono"><i class="fa-solid fa-check"></i></div>`;
-                } else if (isSelected) {
-                    statusIndicator = `<div class="w-6.5 h-6.5 bg-blue-600 text-white rounded-lg flex items-center justify-center text-[11px] shrink-0 font-black font-mono">${index + 1}</div>`;
-                } else {
-                    statusIndicator = `<div class="w-6.5 h-6.5 bg-slate-900 text-slate-550 border border-slate-800 rounded-lg flex items-center justify-center text-[11px] shrink-0 font-bold font-mono">${index + 1}</div>`;
+                if (currentUser) {
+                    const tStatus = myTickets[c.id];
+                    if (tStatus === 'approved') {
+                        actionBtn = `<button onclick="openClassroom('${c.id}')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-lg transition mt-4 text-xs uppercase tracking-wider flex items-center justify-center gap-2"><i class="fa-solid fa-play"></i> <span class="lang-content-om">Bana (Open)</span><span class="lang-content-both-slash hidden"> / </span><span class="lang-content-en hidden">Open Course</span></button>`;
+                        statusBadge = `<span class="absolute top-3 right-3 text-[9px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-bold uppercase border border-emerald-500/30">Unlocked</span>`;
+                    } else if (tStatus === 'pending') {
+                        actionBtn = `<button disabled class="w-full bg-slate-800 text-slate-500 font-bold py-2 rounded-lg mt-4 text-xs uppercase tracking-wider flex items-center justify-center gap-2"><i class="fa-regular fa-clock"></i> Pending Review</button>`;
+                        statusBadge = `<span class="absolute top-3 right-3 text-[9px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full font-bold uppercase border border-amber-500/30">Pending Verify</span>`;
+                    }
                 }
 
-                sidebarHtm += `
-                    <div onclick="selectActiveLecture('${les.id}')" class="p-3.5 rounded-xl border cursor-pointer flex items-center justify-between transition ${isSelected ? 'bg-slate-900 border-blue-500/50' : 'bg-slate-950 border-slate-850 hover:border-slate-800'}">
-                        <div class="flex items-start gap-3 w-[85%]">
-                            ${statusIndicator}
-                            <div class="overflow-hidden">
-                                <p class="text-xs font-black truncate ${isSelected ? 'text-blue-450' : 'text-slate-200'}">${les.titleOm}</p>
-                                <p class="text-[9px] text-slate-500 truncate font-mono uppercase font-semibold mt-0.5">${les.title}</p>
-                                <p class="text-[8px] text-slate-550 font-mono mt-0.5"><i class="fa-regular fa-clock text-[8px] mr-1"></i>${les.duration}</p>
+                return `
+                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between relative hover:border-slate-700 transition shadow-lg">
+                        ${statusBadge}
+                        <div>
+                            <div class="w-12 h-12 flex items-center justify-center rounded-xl border mb-4 text-xl ${c.bg}"><i class="fa-solid ${c.icon}"></i></div>
+                            <h3 class="text-lg font-black text-white mb-2">
+                                <span class="lang-content-om block">${c.om.title}</span>
+                                <span class="lang-content-en block mt-0.5 text-blue-400 font-bold text-sm border-t border-slate-800 pt-1">${c.en.title}</span>
+                            </h3>
+                            <div class="text-sm text-slate-400 space-y-1 mt-3">
+                                <p class="lang-content-om"><i class="fa-solid fa-check text-blue-500 mr-1 text-[10px]"></i> ${c.om.desc}</p>
+                                <p class="lang-content-en"><i class="fa-solid fa-check text-blue-500 mr-1 text-[10px]"></i> ${c.en.desc}</p>
                             </div>
                         </div>
-                        ${isCompleted ? '<i class="fa-regular fa-circle-check text-emerald-400 text-xs shrink-0 select-none"></i>' : ''}
+                        ${actionBtn}
                     </div>
                 `;
-            });
-            document.getElementById('classroom-sidebar-list').innerHTML = sidebarHtm;
+            }).join('');
         }
 
-        function selectActiveLecture(lesId) {
-            if (!classroomCourse) return;
-            const target = classroomCourse.lessons.find(l => l.id === lesId);
-            if (target) {
-                classroomActiveLesson = target;
-                renderClassroomPlayer();
-            }
+        // --- AUTH LOGIC ---
+        window.authLogin = async () => {
+            try { await signInWithPopup(auth, new GoogleAuthProvider()); } 
+            catch (e) { console.error("Login err:", e); alert("Login failed"); }
         }
+        window.authLogout = async () => { await signOut(auth); }
 
-        function toggleCompletedLessonState() {
-            if (!classroomActiveLesson) return;
-            const lid = classroomActiveLesson.id;
-            const idx = lessonProgress.indexOf(lid);
+        onAuthStateChanged(auth, async (user) => {
+            currentUser = user;
+            myTickets = {};
+            const loginBtn = document.getElementById('login-btn');
+            const userMenu = document.getElementById('user-menu');
+            const adminBtn = document.getElementById('admin-nav-btn');
+            
+            if (user) {
+                loginBtn.classList.add('hidden');
+                userMenu.classList.remove('hidden');
+                document.getElementById('user-display-name').innerText = user.email.split('@')[0];
+                
+                if (user.email === 'dhiirakoo@gmail.com') adminBtn.classList.remove('hidden');
+                else adminBtn.classList.add('hidden');
 
-            if (idx > -1) {
-                lessonProgress.splice(idx, 1);
+                // Load Tickets
+                const q = query(collection(db, "enrollments"), where("userId", "==", user.uid));
+                const snap = await getDocs(q);
+                snap.forEach(doc => { myTickets[doc.data().courseId] = doc.data().status; });
             } else {
-                lessonProgress.push(lid);
+                loginBtn.classList.remove('hidden');
+                userMenu.classList.add('hidden');
+                adminBtn.classList.add('hidden');
             }
+            renderCourseCards();
+        });
 
-            localStorage.setItem('amoo_progress', JSON.stringify(lessonProgress));
-            renderClassroomPlayer();
-            renderCatalogGrid();
+        // --- TICKETING & PURCHASING ---
+        window.handleEnrollClick = (cid) => {
+            if (!currentUser) return alert("Please Login first / Maaloo jalqaba login godhaa.");
+            document.getElementById('ticket-course-id').value = cid;
+            document.getElementById('ticket-form').reset();
+            openModal('modal-payment');
         }
 
-        // --- AUTH CONTROLLERS ---
-        function showModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-        }
-
-        function hideModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
-
-        function toggleAuthSignType() {
-            isAuthSignUpPattern = !isAuthSignUpPattern;
-            document.getElementById('auth-modal-title').innerText = isAuthSignUpPattern ? "Sign Up / Galmee Uumi" : "Sign In / Seeni Account";
-            document.getElementById('auth-modal-subtitle').innerText = isAuthSignUpPattern ? "Sign up to track course analytics and progress." : "Join the Amoo Academy interactive classroom to start learning.";
-            document.getElementById('auth-toggle-tip').innerText = isAuthSignUpPattern ? "Already have an account? Sign In / Seeni instead" : "Don't have an account yet? Create Account instead";
-        }
-
-        function handleAccountAuth(e) {
+        document.getElementById('ticket-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('auth-email').value.trim();
-            const pass = document.getElementById('auth-pass').value.trim();
-            const errorArea = document.getElementById('auth-error');
+            const btn = document.getElementById('ticket-submit-btn');
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Processing...`;
+            btn.disabled = true;
 
-            if (!email || !pass) return;
-
-            if (pass.length < 6) {
-                errorArea.classList.remove('hidden');
-                errorArea.innerText = "Password must carry at least 6 characters.";
-                return;
-            }
-
-            errorArea.classList.add('hidden');
-            const isOwner = email === "dhiirakoo@gmail.com";
-
-            currentUser = {
-                uid: 'uid_' + Math.floor(Math.random() * 100000000),
-                email: email,
-                displayName: email.split('@')[0],
-                role: isOwner ? 'admin' : 'student'
-            };
-
-            localStorage.setItem('amoo_user', JSON.stringify(currentUser));
-            updateUserShellNavbar();
-            hideModal('auth-modal');
-            renderCatalogGrid();
-            renderAdminDashboardList();
-        }
-
-        function handleLogoutAction() {
-            currentUser = null;
-            selectedCourseIdToBuy = null;
-            classroomCourse = null;
-            classroomActiveLesson = null;
-
-            localStorage.removeItem('amoo_user');
-
-            updateUserShellNavbar();
-            navigateAndReset();
-            renderCatalogGrid();
-        }
-
-        // --- SUBMISSION TRANSACTION TICKET CHANNELS ---
-        function requestPaymentSheet(courseId) {
-            if (!currentUser) {
-                showModal('auth-modal');
-                return;
-            }
-            selectedCourseIdToBuy = courseId;
-            setPayMethod('CBE');
-            showModal('payment-modal');
-        }
-
-        function setPayMethod(gateway) {
-            selectedPaymentGateway = gateway;
-            const cbeItem = document.getElementById('method-cbe');
-            const teleItem = document.getElementById('method-telebirr');
-
-            if (gateway === 'CBE') {
-                cbeItem.className = "p-3 rounded-2xl border border-blue-500/40 bg-blue-500/10 text-blue-300 text-center cursor-pointer transition";
-                teleItem.className = "p-3 rounded-2xl border border-slate-800 bg-slate-950 text-slate-400 text-center cursor-pointer transition";
-                document.getElementById('recip-org').innerText = "CBE Commercial Bank";
-                document.getElementById('recip-org').className = "text-[10px] text-blue-400 font-extrabold uppercase mt-1";
-                document.getElementById('recip-account').innerText = "1000755134701";
-            } else {
-                cbeItem.className = "p-3 rounded-2xl border border-slate-800 bg-slate-950 text-slate-400 text-center cursor-pointer transition";
-                teleItem.className = "p-3 rounded-2xl border border-amber-500/40 bg-amber-500/10 text-amber-300 text-center cursor-pointer transition";
-                document.getElementById('recip-org').innerText = "Telebirr Mobile Payment";
-                document.getElementById('recip-org').className = "text-[10px] text-amber-500 font-extrabold uppercase mt-1";
-                document.getElementById('recip-account').innerText = "0967145146";
-            }
-        }
-
-        function handleReceiptSubmit(e) {
-            e.preventDefault();
-            const referenceId = document.getElementById('pay-ref').value.trim();
-            if (!referenceId || !currentUser || !selectedCourseIdToBuy) return;
-
-            const targetCourse = ACADEMY_COURSES.find(c => c.id === selectedCourseIdToBuy);
-            if (!targetCourse) return;
-
-            const ticket = {
-                enrollmentId: `${currentUser.uid}_${targetCourse.id}`,
+            const courseId = document.getElementById('ticket-course-id').value;
+            const courseRef = courses.find(c => c.id === courseId);
+            
+            const newDocRef = doc(collection(db, "enrollments"));
+            
+            const payload = {
+                enrollmentId: newDocRef.id,
                 userId: currentUser.uid,
                 userEmail: currentUser.email,
-                courseId: targetCourse.id,
-                courseName: targetCourse.title,
-                price: targetCourse.price,
-                paymentMethod: selectedPaymentGateway,
-                transactionRef: referenceId,
-                status: "pending"
+                courseId: courseId,
+                courseName: courseRef.en.title,
+                price: 200,
+                paymentMethod: document.getElementById('ticket-method').value,
+                transactionRef: document.getElementById('ticket-ref').value,
+                status: 'pending',
+                submittedAt: serverTimestamp(),
+                updatedAt: serverTimestamp()
             };
 
-            const existingIndex = enrollments.findIndex(en => en.enrollmentId === ticket.enrollmentId);
-            if (existingIndex > -1) {
-                enrollments[existingIndex] = ticket;
-            } else {
-                enrollments.push(ticket);
+            try {
+                await setDoc(newDocRef, payload);
+                alert("Ticket Submitted successfully! Wait for admin approval.");
+                myTickets[courseId] = 'pending';
+                closeModal('modal-payment');
+                renderCourseCards();
+            } catch (err) {
+                console.error("Doc write error", err);
+                alert("Error writing to database. Check rules.");
+            } finally {
+                btn.innerHTML = `Submit Ticket`;
+                btn.disabled = false;
             }
+        });
 
-            localStorage.setItem('amoo_enrollments', JSON.stringify(enrollments));
-            hideModal('payment-modal');
-            document.getElementById('pay-ref').value = "";
-            renderCatalogGrid();
-            renderAdminDashboardList();
-
-            alert(
-                "Gariidha! Tiketiin kaffaltii keessanii ergameera. Admiiniin sa'aatii muraasa keessatti qoratee kosi keessan ni banaan!\n" +
-                "Saffisaan akka sii banamuuf ammoo ragaa kaffaltii Telegramiin @Amanuel_Harar nuuf ergaa.\n\n" +
-                "Awesome! Your payment verification ticket was successfully logged. Admin will verify details and unlock lessons soon!\n" +
-                "You can send receipts to @Amanuel_Harar on Telegram to expedite."
-            );
+        // --- CLASSROOM ---
+        window.openClassroom = (cid) => {
+            const course = courses.find(c => c.id === cid);
+            if(!course) return;
+            document.getElementById('class-title').innerText = course.en.title; // Hybrid title
+            document.getElementById('class-desc-om').innerText = course.om.desc;
+            document.getElementById('class-desc-en').innerText = course.en.desc;
+            
+            // Dummy lessons list
+            document.getElementById('class-sidebar-list').innerHTML = `
+                <div class="bg-blue-600/20 border border-blue-500/30 p-3 rounded-lg text-xs text-blue-300 font-bold cursor-pointer">
+                    <i class="fa-solid fa-circle-play mr-2"></i> 1. Introduction Basics
+                </div>
+                <div class="hover:bg-slate-800 p-3 rounded-lg text-xs text-slate-400 transition cursor-pointer">
+                    <i class="fa-regular fa-circle mr-2"></i> 2. Deep Dive Workflows
+                </div>
+                <div class="hover:bg-slate-800 p-3 rounded-lg text-xs text-slate-400 transition cursor-pointer">
+                    <i class="fa-regular fa-circle mr-2"></i> 3. Advanced Final Results
+                </div>
+            `;
+            navigateTo('classroom');
         }
 
-        // --- ADMINISTRATIVE CONTROLS ---
-        function toggleAdminView() {
-            const adminField = document.getElementById('admin-view-modal');
-            if (adminField.classList.contains('hidden')) {
-                renderAdminDashboardList();
-                adminField.classList.remove('hidden');
-            } else {
-                adminField.classList.add('hidden');
-            }
-        }
+        // --- ADMIN DASHBOARD ---
+        window.loadAdminDashboard = () => {
+            if(unsubscribeAdmin) unsubscribeAdmin();
+            const tbody = document.getElementById('admin-tickets-table');
+            
+            const q = query(collection(db, "enrollments"));
+            unsubscribeAdmin = onSnapshot(q, (snap) => {
+                let html = '';
+                snap.forEach(d => {
+                    const data = d.data();
+                    let actionHtml = '';
+                    let statusBadge = '';
+                    
+                    if(data.status === 'pending') {
+                        statusBadge = `<span class="bg-amber-500/10 text-amber-500 px-2.5 py-1 rounded-full text-[10px] font-bold border border-amber-500/20">Pending</span>`;
+                        actionHtml = `<button onclick="adminApproveTicket('${d.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">Approve</button>`;
+                    } else if(data.status === 'approved') {
+                        statusBadge = `<span class="bg-emerald-500/10 text-emerald-500 px-2.5 py-1 rounded-full text-[10px] font-bold border border-emerald-500/20">Approved</span>`;
+                        actionHtml = `<span class="text-xs text-slate-500">Resolved</span>`;
+                    }
 
-        function renderAdminDashboardList() {
-            const container = document.getElementById('admin-tickets-list');
-            if (!container) return;
-
-            if (enrollments.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-10 border border-dashed border-slate-800 rounded-2xl bg-slate-950 p-6">
-                        <i class="fa-solid fa-rectangle-list text-slate-700 text-3xl mb-3"></i>
-                        <p class="text-slate-400 font-extrabold uppercase text-[10px] tracking-wider font-mono">No Tickets Submitted</p>
-                    </div>
-                `;
-                return;
-            }
-
-            let htmlBlocks = "";
-            enrollments.forEach(ticket => {
-                htmlBlocks += `
-                    <div class="bg-slate-950 border border-slate-850 p-4.5 rounded-2xl space-y-3 shadow-inner">
-                        <div class="flex justify-between items-start gap-4 select-text">
-                            <div>
-                                <p class="text-xs font-black text-white font-mono">${ticket.userEmail}</p>
-                                <p class="text-[10px] text-slate-400 mt-1">Course: <b class="text-blue-400 font-bold">${ticket.courseName}</b></p>
-                                <p class="text-[9px] text-slate-550 font-mono mt-0.5">Reference ID: <span class="bg-slate-900 border border-slate-800 px-1 rounded uppercase tracking-wider">${ticket.enrollmentId.substring(0, 10)}...</span></p>
-                            </div>
-                            <span class="text-[9px] font-black font-mono border px-2 py-0.5 rounded-full uppercase ${ticket.status === 'approved' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : ticket.status === 'pending' ? 'bg-amber-400/10 text-amber-400 border-amber-400/20 animate-pulse' : 'bg-red-500/10 text-red-500 border-red-500/20'}">${ticket.status}</span>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-2.5 bg-slate-900 border border-slate-850 p-2.5 rounded-xl font-mono text-[10px] text-slate-300">
-                            <div>
-                                <span class="text-[8px] text-slate-500 uppercase block font-sans font-bold">Payment Channel</span>
-                                <b class="text-white">${ticket.paymentMethod}</b>
-                            </div>
-                            <div>
-                                <span class="text-[8px] text-slate-500 uppercase block font-sans font-bold">Transaction Code</span>
-                                <b class="text-amber-400 tracking-wider uppercase select-all">${ticket.transactionRef}</b>
-                            </div>
-                        </div>
-
-                        <div class="flex gap-2 pt-2.5 border-t border-slate-850 justify-between items-center select-none">
-                            <div class="flex gap-1.5">
-                                ${ticket.status !== 'approved' ? `<button onclick="adminSetTicketStatus('${ticket.enrollmentId}', 'approved')" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[9px] font-bold uppercase tracking-wider rounded-lg transition cursor-pointer"><i class="fa-solid fa-check mr-1"></i> Approve</button>` : ''}
-                                ${ticket.status !== 'rejected' ? `<button onclick="adminSetTicketStatus('${ticket.enrollmentId}', 'rejected')" class="px-3 py-1.5 bg-amber-500 hover:bg-amber-450 text-slate-950 text-[9px] font-bold uppercase tracking-wider rounded-lg transition cursor-pointer"><i class="fa-solid fa-ban mr-1"></i> Decline</button>` : ''}
-                            </div>
-                            <button onclick="adminDeleteTicket('${ticket.enrollmentId}')" class="p-1.5 text-slate-500 hover:text-red-500/80 transition cursor-pointer"><i class="fa-regular fa-trash-can text-sm"></i></button>
-                        </div>
-                    </div>
-                `;
+                    html += `
+                        <tr class="hover:bg-slate-800/50 transition">
+                            <td class="px-4 py-3 font-mono text-blue-300">${data.userEmail.split('@')[0]}</td>
+                            <td class="px-4 py-3">${data.courseName} <span class="bg-slate-800 text-slate-400 px-2 py-0.5 rounded text-[9px] ml-1">200 Birr</span></td>
+                            <td class="px-4 py-3 font-bold">${data.paymentMethod}</td>
+                            <td class="px-4 py-3 font-mono text-amber-400">${data.transactionRef}</td>
+                            <td class="px-4 py-3">${statusBadge}</td>
+                            <td class="px-4 py-3 text-right">${actionHtml}</td>
+                        </tr>
+                    `;
+                });
+                tbody.innerHTML = html || `<tr><td colspan="6" class="px-4 py-5 text-center text-sm text-slate-500">No tickets found.</td></tr>`;
+            }, (error) => {
+                 tbody.innerHTML = `<tr><td colspan="6" class="px-4 py-8 text-center text-red-500">Permission denied or error loading. Enable firestore.rules if not set.</td></tr>`;
+                 console.error(error);
             });
-            container.innerHTML = htmlBlocks;
         }
 
-        function adminSetTicketStatus(enrollmentId, status) {
-            const ticket = enrollments.find(e => e.enrollmentId === enrollmentId);
-            if (ticket) {
-                ticket.status = status;
-                localStorage.setItem('amoo_enrollments', JSON.stringify(enrollments));
-                renderAdminDashboardList();
-                renderCatalogGrid();
-                if (classroomCourse) renderClassroomPlayer();
+        window.adminApproveTicket = async (docId) => {
+            if(!confirm("Approve this ticket?")) return;
+            try {
+                await updateDoc(doc(db, "enrollments", docId), { status: "approved", updatedAt: serverTimestamp() });
+            } catch (e) {
+                console.error(e); alert("Failed to approve ticket");
             }
         }
 
-        function adminDeleteTicket(enrollmentId) {
-            const index = enrollments.findIndex(e => e.enrollmentId === enrollmentId);
-            if (index > -1) {
-                enrollments.splice(index, 1);
-                localStorage.setItem('amoo_enrollments', JSON.stringify(enrollments));
-                renderAdminDashboardList();
-                renderCatalogGrid();
-                if (classroomCourse) renderClassroomPlayer();
-            }
-        }
+        // Init language state
+        setTimeout(() => setGlobalLang('both'), 100);
+        renderCourseCards();
 
-        function handleSupportForm(e) {
-            e.preventDefault();
-            const name = document.getElementById('sup-name').value.trim();
-            const email = document.getElementById('sup-email').value.trim();
-            const msg = document.getElementById('sup-msg').value.trim();
-
-            if (!name || !email || !msg) return;
-
-            const alertBox = document.getElementById('support-alert');
-            alertBox.classList.remove('hidden');
-            alertBox.innerHTML = `✓ Thank you! Advisory ticket logged successfully. <br> Galatoomaa! Ergaan keessan sirriitti daddabarameera.`;
-
-            document.getElementById('sup-name').value = "";
-            document.getElementById('sup-email').value = "";
-            document.getElementById('sup-msg').value = "";
-
-            setTimeout(() => {
-                alertBox.classList.add('hidden');
-            }, 6000);
-        }
-
-        window.onload = bootstrapDatabase;
     </script>
 </body>
 </html>
