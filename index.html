@@ -3,339 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amoo Academy | Full Backend</title>
-    <!-- Fonts -->
+    <title>Amoo Academy | E-Book Store</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
-                        mono: ['"JetBrains Mono"', 'monospace']
-                    }
-                }
-            }
-        }
-    </script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #0f172a; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f5f9; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-        
-        /* Language display rules */
         body.lang-om-only .lang-content-en, body.lang-om-only .lang-content-both-slash { display: none !important; }
         body.lang-en-only .lang-content-om, body.lang-en-only .lang-content-both-slash { display: none !important; }
-        
         .modal { transition: opacity 0.3s ease, transform 0.3s ease; opacity: 0; pointer-events: none; }
         .modal.active { opacity: 1; pointer-events: auto; }
-        .modal-content { transform: scale(0.95); transition: transform 0.3s ease; }
-        .modal.active .modal-content { transform: scale(1); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between lang-both">
-
-    <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-slate-800 py-2 px-4 text-center text-xs font-bold uppercase tracking-wider text-white shadow-sm">
-        <div class="max-w-7xl mx-auto flex justify-center items-center gap-1.5 select-none">
-            <span class="lang-content-om">Dandeettii Tekinoolojii salphaatti baradhaa!</span>
-            <span class="lang-content-both-slash hidden md:inline text-blue-300">|</span>
-            <span class="lang-content-en">Master Tech Workflows Instantly!</span>
-        </div>
-    </div>
+<body class="min-h-screen flex flex-col justify-between">
 
     <nav class="bg-white sticky top-0 z-40 border-b border-slate-200 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex h-16 justify-between items-center">
-                <div class="flex items-center gap-1.5 cursor-pointer" onclick="location.reload()">
-                    <span class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 flex items-center gap-1.5">
-                        <span class="text-blue-600">Amoo</span>
-                        <span class="text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-xl border border-indigo-100 text-xs sm:text-sm font-extrabold uppercase shrink-0">Academy</span>
-                    </span>
-                </div>
-
-                <div class="flex items-center space-x-2 sm:space-x-3">
-                    <div class="flex bg-slate-100 border border-slate-200 rounded-lg p-0.5 shrink-0">
-                        <button onclick="setGlobalLang('om')" id="btn-lang-om" class="px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md text-slate-500 hover:text-slate-900 transition">OM</button>
-                        <button onclick="setGlobalLang('en')" id="btn-lang-en" class="px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md text-slate-500 hover:text-slate-900 transition">EN</button>
-                        <button onclick="setGlobalLang('both')" id="btn-lang-both" class="px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md bg-white text-slate-900 shadow-sm transition">OM/EN</button>
-                    </div>
-
-                    <button id="auth-nav-btn" onclick="openModal('modal-login')" class="bg-blue-600 hover:bg-blue-700 text-white text-[11px] sm:text-xs font-bold py-1.5 sm:py-2 px-3 sm:px-4 rounded-lg transition shadow-sm flex items-center gap-1 shrink-0">
-                        <i class="fa-solid fa-user"></i>
-                        <span class="lang-content-om">Seeni</span>
-                        <span class="lang-content-both-slash">/</span>
-                        <span class="lang-content-en">Login</span>
-                    </button>
-                </div>
+        <div class="max-w-7xl mx-auto px-4 h-16 flex justify-between items-center">
+            <span class="text-xl font-black tracking-tight text-slate-900"><span class="text-blue-600">Amoo</span> Academy</span>
+            <div class="flex bg-slate-100 border rounded-lg p-0.5 text-xs font-bold">
+                <button onclick="setGlobalLang('om')" id="btn-lang-om" class="px-2 py-1 rounded-md text-slate-500">OM</button>
+                <button onclick="setGlobalLang('en')" id="btn-lang-en" class="px-2 py-1 rounded-md text-slate-500">EN</button>
+                <button onclick="setGlobalLang('both')" id="btn-lang-both" class="px-2 py-1 rounded-md bg-white text-slate-900 shadow-sm">OM/EN</button>
             </div>
         </div>
     </nav>
 
-    <main class="flex-grow w-full">
-        <section class="bg-white border-b border-slate-200 py-12 px-4 text-center">
-            <div class="max-w-4xl mx-auto space-y-4">
-                <span class="inline-flex items-center bg-blue-50 border border-blue-200 text-blue-700 text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
-                    Supabase Live Dashboard
-                </span>
-                <h2 class="text-2xl sm:text-4xl font-black text-slate-900">
-                    <span class="lang-content-om">Koorsota Keenya Ammayyaa</span>
-                    <span class="lang-content-en">Our Professional Tech Courses</span>
-                </h2>
-                <p class="text-slate-600 text-sm max-w-xl mx-auto">
-                    Koodii fi tekinoolojii haaraa afaan keetiin salphaatti baradhu. Gatiin koorsii hundaaf 200 Birr qofa.
-                </p>
-            </div>
-        </section>
-
-        <section class="max-w-7xl mx-auto px-4 py-12">
-            <div id="loading-spinner" class="text-center py-12">
-                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-600 border-t-transparent"></div>
-                <p class="text-xs text-slate-500 mt-2 font-bold uppercase tracking-wider">Supabase Database irraa fidaa jira...</p>
-            </div>
-            
-            <div id="courses-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hidden">
-                <!-- Data populated dynamically -->
-            </div>
-        </section>
+    <main class="flex-grow max-w-7xl mx-auto px-4 py-12 w-full">
+        <div id="loading-spinner" class="text-center py-12">
+            <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-600 border-t-transparent"></div>
+        </div>
+        <div id="courses-container" class="grid grid-cols-1 md:grid-cols-3 gap-6 hidden"></div>
     </main>
 
-    <!-- LOGIN MODAL -->
-    <div id="modal-login" class="modal fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="modal-content bg-white p-6 sm:p-8 rounded-2xl w-full max-w-sm relative shadow-xl border border-slate-200">
-            <button onclick="closeModal('modal-login')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <h3 id="auth-title" class="text-xl font-black text-slate-900 mb-6 text-center uppercase tracking-wide">Seeni / Login</h3>
-            
-            <form class="space-y-4" onsubmit="handleAuthSubmit(event)">
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Email Address</label>
-                    <input type="email" id="auth-email" required class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:bg-white transition shadow-sm text-slate-900">
-                </div>
-                <div>
-                    <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">Password</label>
-                    <input type="password" id="auth-pass" required class="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-blue-500 focus:bg-white transition shadow-sm text-slate-900">
-                </div>
-                
-                <div id="auth-error" class="hidden bg-red-50 border border-red-200 text-red-600 text-xs p-2 rounded-lg font-bold text-center"></div>
-
-                <button type="submit" id="auth-submit-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-3 rounded-xl transition shadow shadow-blue-600/20 uppercase tracking-wider mt-2">
-                    SEENI / LOGIN
-                </button>
-            </form>
-            
-            <div class="mt-6 text-center border-t border-slate-100 pt-5">
-                <p class="text-xs text-slate-500 font-medium" id="auth-toggle-prompt">Account hin qabduu?</p>
-                <button onclick="toggleAuthMode()" id="auth-toggle-btn" class="mt-1 text-xs font-bold text-blue-600 hover:text-blue-800 underline transition">
-                    Galmaayi (Register)
-                </button>
+    <div id="modal-payment" class="modal fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white p-6 rounded-2xl w-full max-w-sm relative">
+            <button onclick="closeModal('modal-payment')" class="absolute top-4 right-4 text-slate-400"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-lg font-black text-slate-900 mb-2 text-center">Kaffaltii Mirkaneessi</h3>
+            <p class="text-xs text-slate-600 text-center mb-4">Gatiin E-book kanaa flat rate <span class="font-bold text-blue-600">200 Birr</span> qofa. Kaffaltii erga raawwattanii booda fuyyila PDF argachuuf Telegram khaan ragaa ergaa.</p>
+            <div class="bg-slate-50 p-3 rounded-xl mb-4 text-[11px] space-y-1 text-slate-700 border border-slate-100">
+                <p><strong>CBE:</strong> 1000755134701</p>
+                <p><strong>Telebirr:</strong> 0967145146</p>
             </div>
+            <button id="btn-download-pdf" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 uppercase">
+                <i class="fa-solid fa-file-pdf"></i> PDF Kallattiin Banadhu / Ergi
+            </button>
         </div>
     </div>
 
-    <!-- PAYMENT MODAL -->
-    <div id="modal-payment" class="modal fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="modal-content bg-white p-6 sm:p-8 rounded-2xl w-full max-w-sm relative shadow-xl border border-slate-200">
-            <button onclick="closeModal('modal-payment')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 transition"><i class="fa-solid fa-xmark text-lg"></i></button>
-            
-            <div class="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-4 text-xl">
-                <i class="fa-solid fa-money-bill-wave"></i>
-            </div>
-
-            <h3 class="text-lg font-black text-slate-900 mb-2 text-center uppercase tracking-wide">Kaffaltii Mirkaneessi</h3>
-            <p class="text-xs text-slate-600 text-center mb-6 leading-relaxed">Gatiin koorsii kanaa flat rate <span id="modal-course-price" class="font-bold text-blue-600 bg-blue-50 px-1 rounded">200</span> Birr qofa. Kaffaltii erga raawwattanii booda ragaa keessan Telegram khaan ergaa.</p>
-            
-            <div class="bg-slate-50 p-4 rounded-xl mb-6 text-xs space-y-3 text-slate-700 border border-slate-200 shadow-sm">
-                <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-building-columns text-indigo-600 text-lg w-5 text-center"></i>
-                    <div>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">CBE</p>
-                        <p class="font-mono font-bold text-slate-900">1000755134701</p>
-                    </div>
-                </div>
-                <div class="h-px w-full bg-slate-200"></div>
-                <div class="flex items-center gap-3">
-                    <i class="fa-solid fa-mobile-screen text-emerald-600 text-lg w-5 text-center"></i>
-                    <div>
-                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Telebirr</p>
-                        <p class="font-mono font-bold text-slate-900">0967145146</p>
-                    </div>
-                </div>
-            </div>
-            
-            <a href="https://t.me/Amanuel_Harar" target="_blank" class="w-full flex items-center justify-center gap-2 bg-[#229ED9] hover:bg-[#1E8CC0] text-white text-xs font-bold py-3 rounded-xl transition shadow shadow-[#229ED9]/20 uppercase tracking-wider">
-                <i class="fa-brands fa-telegram text-base"></i> Ragaa Ergi (Verification)
-            </a>
-        </div>
-    </div>
-
-    <footer class="bg-white py-6 border-t border-slate-200 text-center text-[10px] sm:text-xs font-bold text-slate-400 uppercase tracking-widest mt-auto">
-        &copy; 2026 Amoo Academy | Supabase Secured Backend | 200 Birr
+    <footer class="bg-white py-4 border-t text-center text-[10px] font-bold text-slate-400 uppercase">
+        &copy; 2026 Amoo Academy
     </footer>
 
     <script>
-        // Supabase Endpoint Connection details
         const SUPABASE_URL = "https://hesjpceomicbhwbvqhdx.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhlc2pwY2VvbWljYmh3YnZxaGR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxNTYwOTksImV4cCI6MjA5NTczMjA5OX0.hX3JVSe_WLmfVJjvR9qqx2zT0NmL6wc1vT-0hUJLDy0";
-        
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // --- AUTHENTICATION STATE & LOGIC ---
-        let isRegisterMode = false;
+        let activeFileUrl = "";
 
-        _supabase.auth.onAuthStateChange((event, session) => {
-            const btn = document.getElementById('auth-nav-btn');
-            if (session?.user) {
-                btn.innerHTML = `<i class="fa-solid fa-right-from-bracket"></i> <span class="hidden sm:inline">${session.user.email.split('@')[0]} (Ba'i)</span>`;
-                btn.onclick = async () => { await _supabase.auth.signOut(); location.reload(); };
-                btn.classList.add('bg-slate-100', 'text-slate-700', 'hover:bg-slate-200', 'border', 'border-slate-300');
-                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700', 'text-white');
-            } else {
-                btn.innerHTML = `<i class="fa-solid fa-user"></i> <span class="lang-content-om">Seeni</span><span class="lang-content-both-slash">/</span><span class="lang-content-en">Login</span>`;
-                btn.onclick = () => openModal('modal-login');
-                btn.classList.remove('bg-slate-100', 'text-slate-700', 'hover:bg-slate-200', 'border', 'border-slate-300');
-                btn.classList.add('bg-blue-600', 'hover:bg-blue-700', 'text-white');
-            }
-        });
-
-        function toggleAuthMode() {
-            isRegisterMode = !isRegisterMode;
-            document.getElementById('auth-error').classList.add('hidden');
-            
-            document.getElementById('auth-title').innerText = isRegisterMode ? 'Account Uumaa / Register' : 'Seeni / Login';
-            document.getElementById('auth-submit-btn').innerText = isRegisterMode ? 'GALMAAYI / REGISTER' : 'SEENI / LOGIN';
-            
-            document.getElementById('auth-toggle-prompt').innerText = isRegisterMode ? "Account qabdaa gurbayaa?" : "Account hin qabduu?";
-            document.getElementById('auth-toggle-btn').innerText = isRegisterMode ? "Seeni (Login)" : "Galmaayi (Register)";
-        }
-
-        async function handleAuthSubmit(e) {
-            e.preventDefault();
-            const email = document.getElementById('auth-email').value;
-            const pass = document.getElementById('auth-pass').value;
-            const errBox = document.getElementById('auth-error');
-            const submitBtn = document.getElementById('auth-submit-btn');
-            
-            errBox.classList.add('hidden');
-            const origText = submitBtn.innerText;
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-            submitBtn.disabled = true;
-
-            try {
-                if (isRegisterMode) {
-                    const { error } = await _supabase.auth.signUp({ email, password: pass });
-                    if (error) throw error;
-                    alert("Account uumameera! Amma seenuu dandeessa.");
-                    toggleAuthMode();
-                } else {
-                    const { error } = await _supabase.auth.signInWithPassword({ email, password: pass });
-                    if (error) throw error;
-                    closeModal('modal-login');
-                    // state listener will update nav
-                }
-            } catch (err) {
-                errBox.innerText = err.message;
-                errBox.classList.remove('hidden');
-            } finally {
-                submitBtn.innerText = origText;
-                submitBtn.disabled = false;
-            }
-        }
-
-        // --- COURSES LOGIC ---
         async function fetchLiveCourses() {
             try {
                 const { data: courses, error } = await _supabase.from('courses').select('*');
-                
-                // Fallback demo courses if Supabase table is empty or fails policy
-                let displayCourses = courses;
-                if (error || !courses || courses.length === 0) {
-                    console.log("Using fallback demo courses due to RLS or empty table.");
-                    displayCourses = [
-                        { id: '1', title_ao: 'Gulaala Viidiyoo (Video Editing)', title_en: 'Video Editing Masterclass', description_ao: 'Viidiyoo babbareedaa hojjechuu baradhaa.', description_en: 'Create professional videos easily.', duration_ao: "Sa'aatii 5", duration_en: '5 Hours', price: 200, thumbnail: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?auto=format&fit=crop&q=80&w=500' },
-                        { id: '2', title_ao: 'Dizaayinii Girafiksii', title_en: 'Graphic Design Studio', description_ao: 'Looogoo fi barreeffama beeksisaa qopheessuu.', description_en: 'Design logos and professional flyers.', duration_ao: "Sa'aatii 6", duration_en: '6 Hours', price: 200, thumbnail: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=500' },
-                        { id: '3', title_ao: 'Amala AI fi Prompt', title_en: 'AI Prompting Principles', description_ao: 'Afaan AI sirriitti beekuu fi gaafachuu.', description_en: 'Master ChatGPT & Gemini workflows.', duration_ao: "Sa'aatii 4", duration_en: '4 Hours', price: 200, thumbnail: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=500' }
-                    ];
-                }
+                if (error) throw error;
 
-                renderCourses(displayCourses);
+                const container = document.getElementById('courses-container');
                 document.getElementById('loading-spinner').classList.add('hidden');
-                document.getElementById('courses-container').classList.remove('hidden');
+                container.innerHTML = '';
 
-            } catch (err) {
-                console.error("Error loading courses:", err);
-            }
-        }
-        
-        function renderCourses(coursesRaw) {
-            const container = document.getElementById('courses-container');
-            container.innerHTML = '';
-            
-            coursesRaw.forEach(course => {
-                const card = document.createElement('div');
-                card.className = "bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow flex flex-col justify-between";
-                
-                const imageSrc = course.thumbnail || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=500';
-                const price = course.price || 200;
-
-                card.innerHTML = `
-                    <div class="h-48 overflow-hidden bg-slate-100 border-b border-slate-100 relative">
-                        <img src="${imageSrc}" class="w-full h-full object-cover transition-transform duration-500 hover:scale-105" alt="Course Thumbnail">
-                    </div>
-                    <div class="p-6 flex-grow flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center gap-1.5 text-[10px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2.5 py-0.5 rounded-full w-fit uppercase mb-3 shadow-sm">
-                                <i class="fa-solid fa-clock"></i>
-                                <span class="lang-content-om">${course.duration_ao || 'Self-paced'}</span>
-                                <span class="lang-content-en">${course.duration_en || 'Self-paced'}</span>
+                if(courses && courses.length > 0) {
+                    courses.forEach(course => {
+                        const card = document.createElement('div');
+                        card.className = "bg-white border rounded-2xl overflow-hidden shadow-sm p-6 flex flex-col justify-between";
+                        card.innerHTML = `
+                            <div>
+                                <img src="${course.thumbnail || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500'}" class="w-full h-40 object-cover rounded-xl mb-4">
+                                <span class="text-[10px] font-bold text-blue-600 bg-blue-50 border px-2.5 py-0.5 rounded-full uppercase">E-BOOK (PDF)</span>
+                                <h3 class="font-extrabold text-base text-slate-900 mt-2">
+                                    <span class="lang-content-om">${course.title_ao || 'Kitaaba Amoo'}</span>
+                                    <span class="lang-content-en">${course.title_en || 'Amoo Book'}</span>
+                                </h3>
                             </div>
-                            <h3 class="font-black text-lg text-slate-900 tracking-tight leading-tight">
-                                <span class="lang-content-om">${course.title_ao || 'Koorsii'}</span>
-                                <span class="lang-content-en">${course.title_en || 'Course'}</span>
-                            </h3>
-                            <p class="text-sm text-slate-600 mt-2 line-clamp-2 leading-relaxed">
-                                <span class="lang-content-om">${course.description_ao || ''}</span>
-                                <span class="lang-content-en">${course.description_en || ''}</span>
-                            </p>
-                        </div>
-                        <button onclick="openPaymentModal('${price}')" class="w-full mt-6 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-3 rounded-xl transition uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm">
-                            <span class="lang-content-om">GALMAA'I (${price} BIRR)</span>
-                            <span class="lang-content-both-slash hidden">/</span>
-                            <span class="lang-content-en hidden">ENROLL (${price} BIRR)</span>
-                        </button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
+                            <button onclick="openPaymentModal('${course.file_url || '#'}')" class="w-full mt-6 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 rounded-xl uppercase tracking-wider">
+                                <span class="lang-content-om">BITADHU (200 BIRR)</span>
+                                <span class="lang-content-en">BUY NOW (200 BIRR)</span>
+                            </button>
+                        `;
+                        container.appendChild(card);
+                    });
+                }
+                container.classList.remove('hidden');
+            } catch (err) { console.error(err); }
         }
 
-        function openPaymentModal(price) {
-            document.getElementById('modal-course-price').innerText = price;
+        function openPaymentModal(fileUrl) {
+            activeFileUrl = fileUrl;
             openModal('modal-payment');
         }
 
-        // --- UI & UTILS ---
+        document.getElementById('btn-download-pdf').onclick = function() {
+            if(activeFileUrl && activeFileUrl !== "#") {
+                window.open(activeFileUrl, '_blank');
+                // Kallattiin gara Telegram keetiittis akka dhufe ragaa erguuf:
+                window.open("https://t.me/Amanuel_Harar", '_blank');
+            } else {
+                alert("Kitaabni kun liinkii PDF hin qabu bro. Supabase irratti galchi!");
+            }
+        };
+
         function setGlobalLang(lang) {
             document.body.classList.remove('lang-om-only', 'lang-en-only');
-            ['om', 'en', 'both'].forEach(l => document.getElementById(`btn-lang-${l}`).classList.remove('bg-white', 'text-slate-900', 'shadow-sm'));
             if(lang !== 'both') document.body.classList.add(`lang-${lang}-only`);
-            document.getElementById(`btn-lang-${lang}`).classList.add('bg-white', 'text-slate-900', 'shadow-sm');
         }
-
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-        window.onload = () => {
-            fetchLiveCourses();
-            setGlobalLang('both');
-        };
+        window.onload = fetchLiveCourses;
     </script>
 </body>
 </html>
