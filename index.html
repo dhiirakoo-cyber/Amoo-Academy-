@@ -104,7 +104,7 @@
             
             downloadBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Loading...`;
             downloadBtn.disabled = true;
-            activeFileUrl = "";
+            downloadBtn.style.opacity = "0.6";
 
             try {
                 const { data, error } = await _supabase
@@ -115,25 +115,26 @@
 
                 if (error) throw error;
 
-                if (data && data.file_url) {
-                    activeFileUrl = data.file_url;
+                if (data && data.file_url && data.file_url.trim() !== "") {
+                    downloadBtn.setAttribute('data-link', data.file_url.trim());
                     downloadBtn.innerHTML = `<i class="fa-solid fa-file-pdf"></i> PDF KALLATTIIN BANADHU / ERGI`;
                     downloadBtn.disabled = false;
+                    downloadBtn.style.opacity = "1";
                 } else {
                     downloadBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Liinkiin PDF hin argamne`;
+                    downloadBtn.setAttribute('data-link', '');
                 }
             } catch (err) {
                 console.error("Error fetching file_url:", err);
-                downloadBtn.innerHTML = `<i class="fa-solid fa-file-pdf"></i> PDF KALLATTIIN BANADHU / ERGI`;
-                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Ergaa uumameera`;
+                downloadBtn.disabled = true;
             }
         }
 
         document.getElementById('btn-download-pdf').onclick = function() {
-            if(activeFileUrl && activeFileUrl !== "") {
-                window.open(activeFileUrl, '_blank');
-                // Kallattiin gara Telegram keetiittis akka dhufe ragaa erguuf:
-                window.open("https://t.me/Amanuel_Harar", '_blank');
+            const fileUrl = this.getAttribute('data-link');
+            if(fileUrl && fileUrl !== "") {
+                window.open(fileUrl, '_blank');
             } else {
                 alert("Kaffaltiin keessan hundi erga mirkanaa'e booda liinkiin ni saaqama!");
             }
