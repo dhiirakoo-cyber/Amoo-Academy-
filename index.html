@@ -47,7 +47,7 @@
                 <p><strong>CBE:</strong> 1000755134701</p>
                 <p><strong>Telebirr:</strong> 0967145146</p>
             </div>
-            <button id="btn-download-pdf" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 uppercase">
+            <button id="btn-download-pdf" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 uppercase disabled:opacity-50 disabled:cursor-not-allowed">
                 <i class="fa-solid fa-file-pdf"></i> PDF Kallattiin Banadhu / Ergi
             </button>
         </div>
@@ -86,7 +86,7 @@
                                     <span class="lang-content-en">${course.title_en || 'Amoo Book'}</span>
                                 </h3>
                             </div>
-                            <button onclick="openPaymentModal('${course.file_url || '#'}')" class="w-full mt-6 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 rounded-xl uppercase tracking-wider">
+                            <button onclick="openPaymentModal('${course.id}')" class="w-full mt-6 bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2.5 rounded-xl uppercase tracking-wider">
                                 <span class="lang-content-om">BITADHU (200 BIRR)</span>
                                 <span class="lang-content-en">BUY NOW (200 BIRR)</span>
                             </button>
@@ -98,18 +98,44 @@
             } catch (err) { console.error(err); }
         }
 
-        function openPaymentModal(fileUrl) {
-            activeFileUrl = fileUrl;
+        async function openPaymentModal(courseId) {
             openModal('modal-payment');
+            const downloadBtn = document.getElementById('btn-download-pdf');
+            
+            downloadBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Loading...`;
+            downloadBtn.disabled = true;
+            activeFileUrl = "";
+
+            try {
+                const { data, error } = await _supabase
+                    .from('courses')
+                    .select('file_url')
+                    .eq('id', courseId)
+                    .single();
+
+                if (error) throw error;
+
+                if (data && data.file_url) {
+                    activeFileUrl = data.file_url;
+                    downloadBtn.innerHTML = `<i class="fa-solid fa-file-pdf"></i> PDF KALLATTIIN BANADHU / ERGI`;
+                    downloadBtn.disabled = false;
+                } else {
+                    downloadBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Liinkiin PDF hin argamne`;
+                }
+            } catch (err) {
+                console.error("Error fetching file_url:", err);
+                downloadBtn.innerHTML = `<i class="fa-solid fa-file-pdf"></i> PDF KALLATTIIN BANADHU / ERGI`;
+                downloadBtn.disabled = false;
+            }
         }
 
         document.getElementById('btn-download-pdf').onclick = function() {
-            if(activeFileUrl && activeFileUrl !== "#") {
+            if(activeFileUrl && activeFileUrl !== "") {
                 window.open(activeFileUrl, '_blank');
                 // Kallattiin gara Telegram keetiittis akka dhufe ragaa erguuf:
                 window.open("https://t.me/Amanuel_Harar", '_blank');
             } else {
-                alert("Kitaabni kun liinkii PDF hin qabu bro. Supabase irratti galchi!");
+                alert("Kaffaltiin keessan hundi erga mirkanaa'e booda liinkiin ni saaqama!");
             }
         };
 
