@@ -26,14 +26,14 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #0b0f19;
-            color: #f1f5f9;
+            background-color: #f8fafc;
+            color: #0f172a;
         }
         /* Custom scrollbar */
         ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0f172a; }
-        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 9999px; }
-        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
         
         /* Language Display Logic */
         body.lang-om-only .lang-content-en { display: none !important; }
@@ -49,53 +49,53 @@
 <body class="min-h-screen flex flex-col justify-between selection:bg-blue-600 selection:text-white lang-both">
 
     <!-- TOP ANNOUNCEMENT TICKER -->
-    <div class="bg-gradient-to-r from-blue-700 via-indigo-800 to-amber-700 py-2 px-4 text-center text-xs font-bold uppercase tracking-wider text-white">
+    <div class="bg-gradient-to-r from-blue-700 via-indigo-700 to-slate-800 py-2 px-4 text-center text-xs font-bold uppercase tracking-wider text-white">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-center items-center gap-1.5 md:gap-4 select-none">
             <span class="lang-content-om">Dandeettii Tekinoolojii salphaatti baradhaa!</span>
-            <span class="hidden md:inline text-slate-400">|</span>
+            <span class="hidden md:inline text-blue-300">|</span>
             <span class="lang-content-en">Master Tech Workflows Instantly!</span>
         </div>
     </div>
 
     <!-- MAIN NAVBAR -->
-    <nav class="bg-slate-950 sticky top-0 z-40 border-b border-slate-800 backdrop-blur-md">
+    <nav class="bg-white sticky top-0 z-40 border-b border-slate-200 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex h-16 justify-between items-center gap-2">
                 
                 <div class="flex items-center gap-1.5 cursor-pointer shrink-0" onclick="navigateTo('home')">
-                    <span class="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-1.5">
-                        <span class="text-blue-500">Amoo</span>
-                        <span class="text-amber-400 bg-amber-400/10 px-2.5 py-0.5 rounded-xl border border-amber-400/20 text-xs sm:text-sm font-extrabold uppercase shrink-0">Academy</span>
+                    <span class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 flex items-center gap-1.5">
+                        <span class="text-blue-600">Amoo</span>
+                        <span class="text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-xl border border-indigo-100 text-xs sm:text-sm font-extrabold uppercase shrink-0">Academy</span>
                     </span>
                 </div>
 
                 <div class="flex items-center space-x-2 sm:space-x-3 overflow-x-auto no-scrollbar">
                     
                     <!-- Language Switcher -->
-                    <div class="flex bg-slate-900 border border-slate-800 rounded-lg p-0.5 shrink-0">
-                        <button onclick="setGlobalLang('om')" id="btn-lang-om" class="px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md hover:text-white text-slate-400 transition" title="Oromoo Only">OM</button>
-                        <button onclick="setGlobalLang('en')" id="btn-lang-en" class="px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md hover:text-white text-slate-400 transition" title="English Only">EN</button>
-                        <button onclick="setGlobalLang('both')" id="btn-lang-both" class="px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md bg-slate-700 text-white transition" title="Side by Side">OM/EN</button>
+                    <div class="flex bg-slate-100 border border-slate-200 rounded-lg p-0.5 shrink-0">
+                        <button onclick="setGlobalLang('om')" id="btn-lang-om" class="px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md hover:text-slate-900 text-slate-500 transition" title="Oromoo Only">OM</button>
+                        <button onclick="setGlobalLang('en')" id="btn-lang-en" class="px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md hover:text-slate-900 text-slate-500 transition" title="English Only">EN</button>
+                        <button onclick="setGlobalLang('both')" id="btn-lang-both" class="px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md bg-white text-slate-900 shadow-sm transition" title="Side by Side">OM/EN</button>
                     </div>
 
                     <!-- Sandbox Admin Switcher button -->
-                    <button id="admin-nav-btn" onclick="navigateTo('admin')" class="hidden text-[10px] sm:text-xs font-bold py-1.5 px-3 rounded-lg bg-amber-400/10 border border-amber-400/20 text-amber-300 hover:bg-amber-400/20 transition cursor-pointer shrink-0">
+                    <button id="admin-nav-btn" onclick="navigateTo('admin')" class="hidden text-[10px] sm:text-xs font-bold py-1.5 px-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 hover:bg-emerald-100 transition cursor-pointer shrink-0">
                         <i class="fa-solid fa-shield-halved"></i>
                         <span class="hidden sm:inline ml-1">Admin</span>
                     </button>
 
                     <!-- User Session Action -->
                     <div id="auth-container" class="shrink-0">
-                        <button id="login-btn" onclick="authLogin()" class="bg-blue-600 hover:bg-blue-500 text-white text-[11px] sm:text-xs font-bold py-1.5 sm:py-2 px-3 sm:px-4 rounded-lg transition shadow flex items-center gap-1 cursor-pointer">
-                            <i class="fa-brands fa-google"></i>
+                        <button id="login-btn" onclick="openModal('modal-login')" class="bg-blue-600 hover:bg-blue-700 text-white text-[11px] sm:text-xs font-bold py-1.5 sm:py-2 px-3 sm:px-4 rounded-lg transition shadow-sm flex items-center gap-1 cursor-pointer">
+                            <i class="fa-solid fa-user"></i>
                             <span class="lang-content-om">Seeni</span>
                             <span class="lang-content-both-slash">/</span>
                             <span class="lang-content-en">Login</span>
                         </button>
                         
                         <div id="user-menu" class="hidden flex items-center gap-3">
-                            <span id="user-display-name" class="text-xs font-bold text-slate-300 hidden sm:inline"></span>
-                            <button onclick="authLogout()" class="border border-slate-700 hover:bg-slate-800 text-slate-300 text-[11px] sm:text-xs font-bold py-1.5 px-3 rounded-lg transition cursor-pointer">
+                            <span id="user-display-name" class="text-xs font-bold text-slate-700 hidden sm:inline"></span>
+                            <button onclick="authLogout()" class="border border-slate-200 hover:bg-slate-50 text-slate-600 text-[11px] sm:text-xs font-bold py-1.5 px-3 rounded-lg transition cursor-pointer">
                                 <i class="fa-solid fa-right-from-bracket"></i>
                             </button>
                         </div>
@@ -109,10 +109,10 @@
     <main class="flex-grow w-full">
         <!-- 1. HOME VIEW -->
         <div id="view-home" class="view-section active w-full">
-            <section class="bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 border-b border-slate-800 py-16 px-4 text-center overflow-hidden relative">
-                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent pointer-events-none"></div>
+            <section class="bg-white border-b border-slate-200 py-16 px-4 text-center overflow-hidden relative">
+                <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-50 via-transparent to-transparent pointer-events-none"></div>
                 <div class="max-w-4xl mx-auto relative z-10 space-y-6">
-                    <span class="inline-flex items-center gap-1.5 bg-blue-500/10 border border-blue-500/20 text-blue-300 text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                    <span class="inline-flex items-center gap-1.5 bg-blue-50 border border-blue-200 text-blue-700 text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
                         <span class="flex h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                         <span class="lang-content-om">Baga nagaan dhuftan</span>
                         <span class="lang-content-both-slash mx-0.5">|</span>
@@ -121,15 +121,15 @@
                     
                     <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
                         <div class="lang-content-om text-left flex-1">
-                            <span class="text-[9px] font-black text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded uppercase">Afaan Oromoo</span>
-                            <h2 class="text-3xl sm:text-4xl font-black text-white mt-2 leading-tight">Ogummaa Keessan <span class="text-amber-400">Guddisaa!</span></h2>
-                            <p class="text-slate-400 text-xs sm:text-sm mt-2 leading-relaxed">Koorsota tekinoolojii fi daldalaa gadi fageenyaan qophaa'an afaan keessaniin baradhaa.</p>
+                            <span class="text-[9px] font-black text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded uppercase border border-indigo-200">Afaan Oromoo</span>
+                            <h2 class="text-3xl sm:text-4xl font-black text-slate-900 mt-2 leading-tight">Ogummaa Keessan <span class="text-indigo-600">Guddisaa!</span></h2>
+                            <p class="text-slate-600 text-xs sm:text-sm mt-2 leading-relaxed">Koorsota tekinoolojii fi daldalaa gadi fageenyaan qophaa'an afaan keessaniin baradhaa.</p>
                         </div>
-                        <div class="hidden md:block w-px h-24 bg-slate-800"></div>
+                        <div class="hidden md:block w-px h-24 bg-slate-200"></div>
                         <div class="lang-content-en text-left flex-1">
-                            <span class="text-[9px] font-black text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded uppercase">English</span>
-                            <h2 class="text-3xl sm:text-4xl font-black text-white mt-2 leading-tight">Elevate Your <span class="text-blue-500">Skills!</span></h2>
-                            <p class="text-slate-400 text-xs sm:text-sm mt-2 leading-relaxed">Learn premium technology and business courses structured fully in your language.</p>
+                            <span class="text-[9px] font-black text-blue-700 bg-blue-50 px-2 py-0.5 rounded uppercase border border-blue-200">English</span>
+                            <h2 class="text-3xl sm:text-4xl font-black text-slate-900 mt-2 leading-tight">Elevate Your <span class="text-blue-600">Skills!</span></h2>
+                            <p class="text-slate-600 text-xs sm:text-sm mt-2 leading-relaxed">Learn premium technology and business courses structured fully in your language.</p>
                         </div>
                     </div>
                 </div>
@@ -142,31 +142,31 @@
                 </div>
             </section>
             
-            <section class="bg-slate-900 border-t border-slate-800 py-16 px-4 text-center">
+            <section class="bg-white border-t border-slate-200 py-16 px-4 text-center">
                 <div class="max-w-3xl mx-auto">
-                    <h3 class="text-xl sm:text-2xl font-black text-white mb-6">
+                    <h3 class="text-xl sm:text-2xl font-black text-slate-900 mb-6">
                         <span class="lang-content-om">Kaffaltii fi Gargaarsa</span>
                         <span class="lang-content-both-slash">/</span>
                         <span class="lang-content-en">Payment & Support</span>
                     </h3>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-left">
-                        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800">
-                            <i class="fa-solid fa-building-columns text-purple-400 text-xl mb-2 block"></i>
-                            <p class="text-xs text-purple-400 font-bold uppercase tracking-wider">CBE</p>
-                            <p class="text-lg sm:text-xl font-black text-white tracking-widest font-mono">1000755134701</p>
-                            <p class="text-xs text-slate-400 mt-1">Amanuel</p>
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm">
+                            <i class="fa-solid fa-building-columns text-indigo-600 text-xl mb-2 block"></i>
+                            <p class="text-xs text-indigo-600 font-bold uppercase tracking-wider">CBE</p>
+                            <p class="text-lg sm:text-xl font-black text-slate-900 tracking-widest font-mono">1000755134701</p>
+                            <p class="text-xs text-slate-500 mt-1">Amanuel</p>
                         </div>
-                        <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800">
-                            <i class="fa-solid fa-mobile-screen-button text-amber-400 text-xl mb-2 block"></i>
-                            <p class="text-xs text-amber-400 font-bold uppercase tracking-wider">Telebirr / Phone</p>
-                            <p class="text-lg sm:text-xl font-black text-white tracking-widest font-mono">0967145146</p>
-                            <p class="text-xs text-slate-400 mt-1">Amanuel Harar</p>
+                        <div class="bg-slate-50 p-5 rounded-2xl border border-slate-200 shadow-sm">
+                            <i class="fa-solid fa-mobile-screen-button text-emerald-600 text-xl mb-2 block"></i>
+                            <p class="text-xs text-emerald-600 font-bold uppercase tracking-wider">Telebirr / Phone</p>
+                            <p class="text-lg sm:text-xl font-black text-slate-900 tracking-widest font-mono">0967145146</p>
+                            <p class="text-xs text-slate-500 mt-1">Amanuel Harar</p>
                         </div>
                     </div>
                     
-                    <div class="mt-8 bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 text-sm text-blue-300">
-                        <p class="mb-2"><strong>Telegram Support & Validation:</strong> <a href="https://t.me/Amanuel_Harar" target="_blank" class="underline font-bold hover:text-blue-100">@Amanuel_Harar</a></p>
+                    <div class="mt-8 bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-800 shadow-sm">
+                        <p class="mb-2"><strong>Telegram Support & Validation:</strong> <a href="https://t.me/Amanuel_Harar" target="_blank" class="underline font-bold hover:text-blue-600">@Amanuel_Harar</a></p>
                         <p class="text-xs">
                             <span class="lang-content-om">Gatiin koorsii hundaaf 200 Birr qofa.</span>
                             <span class="lang-content-both-slash">|</span>
@@ -179,28 +179,28 @@
 
         <!-- 2. CLASSROOM VIEW -->
         <div id="view-classroom" class="view-section w-full max-w-7xl mx-auto px-4 py-8">
-            <button onclick="navigateTo('home')" class="mb-4 text-slate-400 hover:text-white transition flex items-center gap-2 text-sm font-bold">
+            <button onclick="navigateTo('home')" class="mb-4 text-slate-500 hover:text-slate-900 transition flex items-center gap-2 text-sm font-bold">
                 <i class="fa-solid fa-arrow-left"></i> 
                 <span class="lang-content-om">Duubaitti</span>
                 <span class="lang-content-both-slash">/</span>
                 <span class="lang-content-en">Back</span>
             </button>
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col md:flex-row">
-                <div class="flex-1 p-0 md:p-6 md:border-r border-slate-800 flex flex-col">
-                    <div class="aspect-video bg-black w-full relative sm:rounded-xl overflow-hidden shadow-lg border border-slate-950">
+            <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-lg flex flex-col md:flex-row">
+                <div class="flex-1 p-0 md:p-6 md:border-r border-slate-200 flex flex-col">
+                    <div class="aspect-video bg-slate-100 w-full relative sm:rounded-xl overflow-hidden shadow-sm border border-slate-200">
                         <!-- Standard embedded sample video for all -->
                         <iframe id="vid-frame" class="absolute inset-0 w-full h-full" src="https://www.youtube.com/embed/Yp95v_iW_y8" frameborder="0" allowfullscreen></iframe>
                     </div>
                     <div class="p-4 sm:p-0 sm:pt-6">
-                        <h3 id="class-title" class="text-xl sm:text-2xl font-black text-white">Lesson Title</h3>
-                        <p class="text-xs text-slate-400 mt-2 flex flex-col sm:flex-row gap-2 sm:gap-6">
+                        <h3 id="class-title" class="text-xl sm:text-2xl font-black text-slate-900">Lesson Title</h3>
+                        <p class="text-xs text-slate-600 mt-2 flex flex-col sm:flex-row gap-2 sm:gap-6">
                             <span class="lang-content-om" id="class-desc-om">Ibsa qo'annoo kanaa asitti barreeffama...</span>
                             <span class="lang-content-en" id="class-desc-en">Description for the lesson will be provided here...</span>
                         </p>
                     </div>
                 </div>
-                <div class="w-full md:w-80 bg-slate-950 p-4 sm:p-6 shrink-0 flex flex-col">
-                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">
+                <div class="w-full md:w-80 bg-slate-50 p-4 sm:p-6 shrink-0 flex flex-col">
+                    <h4 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">
                         <span class="lang-content-om">Sillaabasii</span>
                         <span class="lang-content-both-slash">/</span>
                         <span class="lang-content-en">Syllabus</span>
@@ -214,18 +214,18 @@
 
         <!-- 3. ADMIN VIEW -->
         <div id="view-admin" class="view-section w-full max-w-5xl mx-auto px-4 py-8">
-            <button onclick="navigateTo('home')" class="mb-4 text-slate-400 hover:text-white transition flex items-center gap-2 text-sm font-bold">
+            <button onclick="navigateTo('home')" class="mb-4 text-slate-500 hover:text-slate-900 transition flex items-center gap-2 text-sm font-bold">
                 <i class="fa-solid fa-arrow-left"></i> Home
             </button>
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
-                <h3 class="text-2xl font-black text-white mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-shield-halved text-amber-400"></i> Admin Dashboard
+            <div class="bg-white border border-slate-200 shadow-md rounded-2xl p-6">
+                <h3 class="text-2xl font-black text-slate-900 mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-shield-halved text-emerald-600"></i> Admin Dashboard
                 </h3>
-                <p class="text-sm text-slate-400 mb-6">Verify and approve student payment tickets here.</p>
+                <p class="text-sm text-slate-600 mb-6">Verify and approve student payment tickets here.</p>
                 
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm text-slate-300">
-                        <thead class="bg-slate-950 text-slate-400 text-xs uppercase font-bold border-b border-slate-800">
+                    <table class="w-full text-left text-sm text-slate-700">
+                        <thead class="bg-slate-50 text-slate-500 text-xs uppercase font-bold border-b border-slate-200">
                             <tr>
                                 <th class="px-4 py-3">Student</th>
                                 <th class="px-4 py-3">Course</th>
@@ -235,7 +235,7 @@
                                 <th class="px-4 py-3 text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="admin-tickets-table" class="divide-y divide-slate-800/60">
+                        <tbody id="admin-tickets-table" class="divide-y divide-slate-100">
                             <!-- Populated dynamically -->
                             <tr><td colspan="6" class="px-4 py-8 text-center text-slate-500">Loading tickets...</td></tr>
                         </tbody>
@@ -245,19 +245,19 @@
         </div>
     </main>
 
-    <footer class="bg-slate-950 py-6 px-4 border-t border-slate-800 text-center text-xs font-bold text-slate-500 uppercase tracking-widest mt-auto">
+    <footer class="bg-white py-6 px-4 border-t border-slate-200 text-center text-xs font-bold text-slate-500 uppercase tracking-widest mt-auto">
         &copy; 2026 Amoo Academy | 200 Birr Flat Rate
     </footer>
 
     <!-- PAYMENT / TICKETING MODAL -->
-    <div id="modal-payment" class="modal fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl w-full max-w-sm relative">
-            <button onclick="closeModal('modal-payment')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
-            <h3 class="text-lg font-black text-white mb-1 uppercase tracking-wider text-center">
+    <div id="modal-payment" class="modal fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 shadow-xl p-6 rounded-2xl w-full max-w-sm relative">
+            <button onclick="closeModal('modal-payment')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h3 class="text-lg font-black text-slate-900 mb-1 uppercase tracking-wider text-center">
                 <span class="lang-content-om">Kaffaltii Mirkaneessi</span>
                 <span class="lang-content-en hidden">Confirm Payment</span>
             </h3>
-            <p class="text-xs text-slate-400 text-center mb-6">
+            <p class="text-xs text-slate-500 text-center mb-6">
                 <span class="lang-content-om">200 Birr kaffaluun ragaa ergaa.</span>
                 <span class="lang-content-en hidden">Submit receipt for 200 Birr.</span>
             </p>
@@ -266,28 +266,77 @@
                 <input type="hidden" id="ticket-course-id">
                 
                 <div>
-                    <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Payment Method</label>
-                    <select id="ticket-method" class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500">
+                    <label class="block text-[10px] uppercase font-bold text-slate-500 mb-1">Payment Method</label>
+                    <select id="ticket-method" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm">
                         <option value="CBE">CBE (1000755134701)</option>
                         <option value="Telebirr">Telebirr (0967145146)</option>
                     </select>
                 </div>
                 <div>
-                    <label class="block text-[10px] uppercase font-bold text-slate-400 mb-1">Transaction Ref Code</label>
-                    <input type="text" id="ticket-ref" required class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 uppercase font-mono" placeholder="FT1234...">
+                    <label class="block text-[10px] uppercase font-bold text-slate-500 mb-1">Transaction Ref Code</label>
+                    <input type="text" id="ticket-ref" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 uppercase font-mono shadow-sm" placeholder="FT1234...">
                 </div>
                 
-                <button type="submit" id="ticket-submit-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm py-2.5 rounded-lg transition uppercase tracking-wider">
+                <button type="submit" id="ticket-submit-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-2.5 rounded-lg transition uppercase tracking-wider shadow">
                     Submit Ticket
                 </button>
             </form>
         </div>
     </div>
 
+    <!-- LOGIN / REGISTER MODAL -->
+    <div id="modal-login" class="modal fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white border border-slate-200 shadow-xl p-6 rounded-2xl w-full max-w-sm relative">
+            <button onclick="closeModal('modal-login')" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 transition"><i class="fa-solid fa-xmark text-xl"></i></button>
+            
+            <h3 class="text-lg font-black text-slate-900 mb-4 uppercase tracking-wider text-center">
+                <span class="lang-content-om" id="auth-modal-title-om">Seeni</span>
+                <span class="lang-content-both-slash">/</span>
+                <span class="lang-content-en" id="auth-modal-title-en">Login</span>
+            </h3>
+            
+            <button type="button" onclick="authLoginGoogle()" class="w-full bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold text-sm py-2.5 rounded-lg transition shadow-sm flex items-center justify-center gap-2 mb-4">
+                <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
+                <span class="lang-content-om">Google'n Seeni</span>
+                <span class="lang-content-both-slash">/</span>
+                <span class="lang-content-en">Sign in with Google</span>
+            </button>
+
+            <div class="flex items-center gap-3 mb-4">
+                <hr class="flex-1 border-slate-200">
+                <span class="text-[10px] uppercase font-bold text-slate-400">YKN / OR</span>
+                <hr class="flex-1 border-slate-200">
+            </div>
+
+            <form id="auth-form" class="space-y-4">
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-slate-500 mb-1">Email</label>
+                    <input type="email" id="auth-email" required class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm" placeholder="maqaa@email.com">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-slate-500 mb-1">Password</label>
+                    <input type="password" id="auth-password" required minlength="6" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 shadow-sm" placeholder="••••••••">
+                </div>
+                
+                <button type="submit" id="auth-submit-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm py-2.5 rounded-lg transition uppercase tracking-wider shadow">
+                    <span class="lang-content-om" id="auth-submit-om">Seeni</span>
+                    <span class="lang-content-both-slash">/</span>
+                    <span class="lang-content-en" id="auth-submit-en">Login</span>
+                </button>
+                <div id="auth-error-msg" class="text-[11px] text-red-500 font-bold text-center hidden mt-2"></div>
+            </form>
+
+            <div class="mt-5 text-center text-xs text-slate-500">
+                <span id="auth-toggle-prompt">Account hin qabduu?</span>
+                <button type="button" onclick="toggleAuthMode()" id="auth-toggle-btn" class="font-bold text-blue-600 hover:text-blue-700 underline ml-1">Galmaayi / Register</button>
+            </div>
+        </div>
+    </div>
+
     <!-- FIREBASE AND JS LOGIC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore, collection, getDocs, doc, setDoc, query, where, updateDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -312,19 +361,19 @@
         const courses = [
             {
                 id: "video-editing",
-                icon: "fa-video", bg: "bg-blue-500/10 text-blue-400 border-blue-500/20",
+                icon: "fa-video", bg: "bg-blue-50 text-blue-600 border-blue-200",
                 om: { title: "Gulaala Viidiyoo (Video Editing)", desc: "Adeemsa guutuu viidiyoo edit gochuu baradhaa." },
                 en: { title: "Video Editing Masterclass", desc: "Master professional cinematic video workflows." }
             },
             {
                 id: "graphic-design",
-                icon: "fa-palette", bg: "bg-purple-500/10 text-purple-400 border-purple-500/20",
+                icon: "fa-palette", bg: "bg-indigo-50 text-indigo-600 border-indigo-200",
                 om: { title: "Dizaayinii Girafiksii (Design)", desc: "Logo fi dizaayinii daldalaa salphaatti uumaa." },
                 en: { title: "Graphic Design Studio", desc: "Create amazing layouts and visual brands." }
             },
             {
                 id: "prompt-engineering",
-                icon: "fa-microchip", bg: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+                icon: "fa-microchip", bg: "bg-emerald-50 text-emerald-600 border-emerald-200",
                 om: { title: "Afaan AI ykn Prompting", desc: "ChatGPT fi Gemini sirriitti fayyadamuu." },
                 en: { title: "AI Prompt Engineering", desc: "Unlock AI modeling and step-by-step logic." }
             }
@@ -334,9 +383,9 @@
         window.setGlobalLang = (mode) => {
             document.body.classList.remove('lang-om-only', 'lang-en-only', 'lang-both');
             document.body.classList.add(`lang-${mode}` + (mode === 'both' ? '' : '-only'));
-            document.getElementById('btn-lang-om').className = mode === 'om' ? 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition text-white bg-slate-700' : 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition hover:text-white text-slate-400';
-            document.getElementById('btn-lang-en').className = mode === 'en' ? 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition text-white bg-slate-700' : 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition hover:text-white text-slate-400';
-            document.getElementById('btn-lang-both').className = mode === 'both' ? 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition text-white bg-slate-700' : 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition hover:text-white text-slate-400';
+            document.getElementById('btn-lang-om').className = mode === 'om' ? 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition text-slate-900 bg-white shadow-sm' : 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition hover:text-slate-900 text-slate-500';
+            document.getElementById('btn-lang-en').className = mode === 'en' ? 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition text-slate-900 bg-white shadow-sm' : 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition hover:text-slate-900 text-slate-500';
+            document.getElementById('btn-lang-both').className = mode === 'both' ? 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition text-slate-900 bg-white shadow-sm' : 'px-2 py-1 text-[10px] sm:text-xs font-bold rounded-md transition hover:text-slate-900 text-slate-500';
             
             const slashes = document.querySelectorAll('.lang-content-both-slash');
             slashes.forEach(el => el.style.display = (mode === 'both') ? 'inline' : 'none');
@@ -370,31 +419,31 @@
             const grid = document.getElementById('course-grid');
             grid.innerHTML = courses.map(c => {
                 let statusBadge = '';
-                let actionBtn = `<button onclick="handleEnrollClick('${c.id}')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2 rounded-lg transition mt-4 text-xs uppercase tracking-wider"><span class="lang-content-om">Galmaa'i (200 Birr)</span><span class="lang-content-both-slash"> / </span><span class="lang-content-en">Enroll (200 Birr)</span></button>`;
+                let actionBtn = `<button onclick="handleEnrollClick('${c.id}')" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-2 rounded-lg transition mt-4 text-xs uppercase tracking-wider shadow-sm"><span class="lang-content-om">Galmaa'i (200 Birr)</span><span class="lang-content-both-slash"> / </span><span class="lang-content-en">Enroll (200 Birr)</span></button>`;
                 
                 if (currentUser) {
                     const tStatus = myTickets[c.id];
                     if (tStatus === 'approved') {
-                        actionBtn = `<button onclick="openClassroom('${c.id}')" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-lg transition mt-4 text-xs uppercase tracking-wider flex items-center justify-center gap-2"><i class="fa-solid fa-play"></i> <span class="lang-content-om">Bana (Open)</span><span class="lang-content-both-slash hidden"> / </span><span class="lang-content-en hidden">Open Course</span></button>`;
-                        statusBadge = `<span class="absolute top-3 right-3 text-[9px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full font-bold uppercase border border-emerald-500/30">Unlocked</span>`;
+                        actionBtn = `<button onclick="openClassroom('${c.id}')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 rounded-lg transition mt-4 text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-sm"><i class="fa-solid fa-play"></i> <span class="lang-content-om">Bana (Open)</span><span class="lang-content-both-slash hidden"> / </span><span class="lang-content-en hidden">Open Course</span></button>`;
+                        statusBadge = `<span class="absolute top-3 right-3 text-[9px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold uppercase border border-emerald-200">Unlocked</span>`;
                     } else if (tStatus === 'pending') {
-                        actionBtn = `<button disabled class="w-full bg-slate-800 text-slate-500 font-bold py-2 rounded-lg mt-4 text-xs uppercase tracking-wider flex items-center justify-center gap-2"><i class="fa-regular fa-clock"></i> Pending Review</button>`;
-                        statusBadge = `<span class="absolute top-3 right-3 text-[9px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full font-bold uppercase border border-amber-500/30">Pending Verify</span>`;
+                        actionBtn = `<button disabled class="w-full bg-slate-100 text-slate-500 font-bold py-2 rounded-lg mt-4 text-xs uppercase tracking-wider flex items-center justify-center gap-2 border border-slate-200"><i class="fa-regular fa-clock"></i> Pending Review</button>`;
+                        statusBadge = `<span class="absolute top-3 right-3 text-[9px] bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full font-bold uppercase border border-amber-200">Pending Verify</span>`;
                     }
                 }
 
                 return `
-                    <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl flex flex-col justify-between relative hover:border-slate-700 transition shadow-lg">
+                    <div class="bg-white border border-slate-200 p-6 rounded-2xl flex flex-col justify-between relative hover:border-blue-300 transition shadow-sm hover:shadow-md">
                         ${statusBadge}
                         <div>
                             <div class="w-12 h-12 flex items-center justify-center rounded-xl border mb-4 text-xl ${c.bg}"><i class="fa-solid ${c.icon}"></i></div>
-                            <h3 class="text-lg font-black text-white mb-2">
+                            <h3 class="text-lg font-black text-slate-900 mb-2">
                                 <span class="lang-content-om block">${c.om.title}</span>
-                                <span class="lang-content-en block mt-0.5 text-blue-400 font-bold text-sm border-t border-slate-800 pt-1">${c.en.title}</span>
+                                <span class="lang-content-en block mt-0.5 text-blue-600 font-bold text-sm border-t border-slate-100 pt-1">${c.en.title}</span>
                             </h3>
-                            <div class="text-sm text-slate-400 space-y-1 mt-3">
-                                <p class="lang-content-om"><i class="fa-solid fa-check text-blue-500 mr-1 text-[10px]"></i> ${c.om.desc}</p>
-                                <p class="lang-content-en"><i class="fa-solid fa-check text-blue-500 mr-1 text-[10px]"></i> ${c.en.desc}</p>
+                            <div class="text-sm text-slate-600 space-y-1 mt-3">
+                                <p class="lang-content-om"><i class="fa-solid fa-check text-emerald-500 mr-1 text-[10px]"></i> ${c.om.desc}</p>
+                                <p class="lang-content-en"><i class="fa-solid fa-check text-emerald-500 mr-1 text-[10px]"></i> ${c.en.desc}</p>
                             </div>
                         </div>
                         ${actionBtn}
@@ -404,10 +453,64 @@
         }
 
         // --- AUTH LOGIC ---
-        window.authLogin = async () => {
-            try { await signInWithPopup(auth, new GoogleAuthProvider()); } 
-            catch (e) { console.error("Login err:", e); alert("Login failed"); }
+        window.authLoginGoogle = async () => {
+            document.getElementById('auth-error-msg').classList.add('hidden');
+            try { 
+                await signInWithPopup(auth, new GoogleAuthProvider()); 
+                closeModal('modal-login');
+            } catch (e) { 
+                console.error("Login err:", e); 
+                const errBox = document.getElementById('auth-error-msg');
+                errBox.innerText = "Google Login failed.";
+                errBox.classList.remove('hidden');
+            }
         }
+
+        let isRegisterMode = false;
+        window.toggleAuthMode = () => {
+            isRegisterMode = !isRegisterMode;
+            document.getElementById('auth-error-msg').classList.add('hidden');
+            
+            document.getElementById('auth-modal-title-om').innerText = isRegisterMode ? "Galmaayi" : "Seeni";
+            document.getElementById('auth-modal-title-en').innerText = isRegisterMode ? "Register" : "Login";
+            
+            document.getElementById('auth-submit-om').innerText = isRegisterMode ? "Galmaayi" : "Seeni";
+            document.getElementById('auth-submit-en').innerText = isRegisterMode ? "Register" : "Login";
+
+            document.getElementById('auth-toggle-prompt').innerText = isRegisterMode ? "Account qabdaa? (Have an account?)" : "Account hin qabduu? (No account?)";
+            document.getElementById('auth-toggle-btn').innerText = isRegisterMode ? "Seeni / Login" : "Galmaayi / Register";
+        }
+
+        document.getElementById('auth-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('auth-submit-btn');
+            const errBox = document.getElementById('auth-error-msg');
+            const email = document.getElementById('auth-email').value;
+            const pass = document.getElementById('auth-password').value;
+            
+            const origHTML = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i>`;
+            btn.disabled = true;
+            errBox.classList.add('hidden');
+
+            try {
+                if (isRegisterMode) {
+                    await createUserWithEmailAndPassword(auth, email, pass);
+                } else {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                }
+                closeModal('modal-login');
+                document.getElementById('auth-form').reset();
+            } catch (err) {
+                console.error("Auth error", err);
+                errBox.innerText = err.message.replace('Firebase:', '').trim();
+                errBox.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = origHTML;
+            }
+        });
+
         window.authLogout = async () => { await signOut(auth); }
 
         onAuthStateChanged(auth, async (user) => {
@@ -439,7 +542,10 @@
 
         // --- TICKETING & PURCHASING ---
         window.handleEnrollClick = (cid) => {
-            if (!currentUser) return alert("Please Login first / Maaloo jalqaba login godhaa.");
+            if (!currentUser) {
+                openModal('modal-login');
+                return;
+            }
             document.getElementById('ticket-course-id').value = cid;
             document.getElementById('ticket-form').reset();
             openModal('modal-payment');
@@ -495,13 +601,13 @@
             
             // Dummy lessons list
             document.getElementById('class-sidebar-list').innerHTML = `
-                <div class="bg-blue-600/20 border border-blue-500/30 p-3 rounded-lg text-xs text-blue-300 font-bold cursor-pointer">
+                <div class="bg-blue-50 border border-blue-200 p-3 rounded-lg text-xs text-blue-700 font-bold cursor-pointer shadow-sm">
                     <i class="fa-solid fa-circle-play mr-2"></i> 1. Introduction Basics
                 </div>
-                <div class="hover:bg-slate-800 p-3 rounded-lg text-xs text-slate-400 transition cursor-pointer">
+                <div class="hover:bg-slate-100 p-3 rounded-lg text-xs text-slate-600 transition cursor-pointer">
                     <i class="fa-regular fa-circle mr-2"></i> 2. Deep Dive Workflows
                 </div>
-                <div class="hover:bg-slate-800 p-3 rounded-lg text-xs text-slate-400 transition cursor-pointer">
+                <div class="hover:bg-slate-100 p-3 rounded-lg text-xs text-slate-600 transition cursor-pointer">
                     <i class="fa-regular fa-circle mr-2"></i> 3. Advanced Final Results
                 </div>
             `;
@@ -522,19 +628,19 @@
                     let statusBadge = '';
                     
                     if(data.status === 'pending') {
-                        statusBadge = `<span class="bg-amber-500/10 text-amber-500 px-2.5 py-1 rounded-full text-[10px] font-bold border border-amber-500/20">Pending</span>`;
-                        actionHtml = `<button onclick="adminApproveTicket('${d.id}')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">Approve</button>`;
+                        statusBadge = `<span class="bg-amber-100 text-amber-700 px-2.5 py-1 rounded-full text-[10px] font-bold border border-amber-200">Pending</span>`;
+                        actionHtml = `<button onclick="adminApproveTicket('${d.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">Approve</button>`;
                     } else if(data.status === 'approved') {
-                        statusBadge = `<span class="bg-emerald-500/10 text-emerald-500 px-2.5 py-1 rounded-full text-[10px] font-bold border border-emerald-500/20">Approved</span>`;
+                        statusBadge = `<span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-full text-[10px] font-bold border border-emerald-200">Approved</span>`;
                         actionHtml = `<span class="text-xs text-slate-500">Resolved</span>`;
                     }
 
                     html += `
-                        <tr class="hover:bg-slate-800/50 transition">
-                            <td class="px-4 py-3 font-mono text-blue-300">${data.userEmail.split('@')[0]}</td>
-                            <td class="px-4 py-3">${data.courseName} <span class="bg-slate-800 text-slate-400 px-2 py-0.5 rounded text-[9px] ml-1">200 Birr</span></td>
+                        <tr class="hover:bg-slate-50 transition border-b border-slate-100 last:border-0">
+                            <td class="px-4 py-3 font-mono text-slate-700">${data.userEmail.split('@')[0]}</td>
+                            <td class="px-4 py-3">${data.courseName} <span class="bg-slate-100 text-slate-500 px-2 py-0.5 rounded text-[9px] ml-1 font-medium border border-slate-200">200 Birr</span></td>
                             <td class="px-4 py-3 font-bold">${data.paymentMethod}</td>
-                            <td class="px-4 py-3 font-mono text-amber-400">${data.transactionRef}</td>
+                            <td class="px-4 py-3 font-mono text-emerald-600">${data.transactionRef}</td>
                             <td class="px-4 py-3">${statusBadge}</td>
                             <td class="px-4 py-3 text-right">${actionHtml}</td>
                         </tr>
