@@ -47,9 +47,15 @@
                 <p><strong>CBE:</strong> 1000755134701</p>
                 <p><strong>Telebirr:</strong> 0967145146</p>
             </div>
-            <button id="btn-download-pdf" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 uppercase disabled:opacity-50 disabled:cursor-not-allowed">
-                <i class="fa-solid fa-file-pdf"></i> PDF Kallattiin Banadhu / Ergi
-            </button>
+            
+            <div class="flex flex-col gap-2">
+                <button id="preview-pdf-btn" class="w-full bg-blue-100 hover:bg-blue-200 text-blue-700 text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 uppercase disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fa-solid fa-eye"></i> PREVIEW PDF
+                </button>
+                <button id="download-pdf-btn" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-2.5 rounded-xl transition flex items-center justify-center gap-1.5 uppercase disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fa-solid fa-file-pdf"></i> DOWNLOAD / ERGI
+                </button>
+            </div>
         </div>
     </div>
 
@@ -61,8 +67,6 @@
         const SUPABASE_URL = "https://hesjpceomicbhwbvqhdx.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhlc2pwY2VvbWljYmh3YnZxaGR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxNTYwOTksImV4cCI6MjA5NTczMjA5OX0.hX3JVSe_WLmfVJjvR9qqx2zT0NmL6wc1vT-0hUJLDy0";
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        let activeFileUrl = "";
 
         async function fetchLiveCourses() {
             try {
@@ -100,45 +104,74 @@
 
         async function openPaymentModal(courseId) {
             openModal('modal-payment');
-            const downloadBtn = document.getElementById('btn-download-pdf');
+            const downloadBtn = document.getElementById('download-pdf-btn');
+            const previewBtn = document.getElementById('preview-pdf-btn');
             
             downloadBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Loading...`;
             downloadBtn.disabled = true;
             downloadBtn.style.opacity = "0.6";
 
+            previewBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Loading...`;
+            previewBtn.disabled = true;
+            previewBtn.style.opacity = "0.6";
+
             try {
                 const { data, error } = await _supabase
                     .from('courses')
-                    .select('file_url')
+                    .select('file_url, preview_url')
                     .eq('id', courseId)
                     .single();
 
                 if (error) throw error;
 
+                // Handle file_url (Download)
                 if (data && data.file_url && data.file_url.trim() !== "") {
                     downloadBtn.setAttribute('data-link', data.file_url.trim());
-                    downloadBtn.innerHTML = `<i class="fa-solid fa-file-pdf"></i> PDF KALLATTIIN BANADHU / ERGI`;
+                    downloadBtn.innerHTML = `<i class="fa-solid fa-file-pdf"></i> DOWNLOAD / ERGI`;
                     downloadBtn.disabled = false;
                     downloadBtn.style.opacity = "1";
                 } else {
                     downloadBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Liinkiin PDF hin argamne`;
                     downloadBtn.setAttribute('data-link', '');
                 }
+
+                // Handle preview_url (Preview)
+                if (data && data.preview_url && data.preview_url.trim() !== "") {
+                    previewBtn.setAttribute('data-link', data.preview_url.trim());
+                    previewBtn.innerHTML = `<i class="fa-solid fa-eye"></i> PREVIEW PDF`;
+                    previewBtn.disabled = false;
+                    previewBtn.style.opacity = "1";
+                } else {
+                    previewBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Preview hin argamne`;
+                    previewBtn.setAttribute('data-link', '');
+                }
+
             } catch (err) {
-                console.error("Error fetching file_url:", err);
+                console.error("Error fetching URLs:", err);
                 downloadBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Ergaa uumameera`;
                 downloadBtn.disabled = true;
+                previewBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Ergaa uumameera`;
+                previewBtn.disabled = true;
             }
         }
 
-        document.getElementById('btn-download-pdf').onclick = function() {
+        document.getElementById('download-pdf-btn').addEventListener('click', function() {
             const fileUrl = this.getAttribute('data-link');
             if(fileUrl && fileUrl !== "") {
                 window.open(fileUrl, '_blank');
             } else {
-                alert("Kaffaltiin keessan hundi erga mirkanaa'e booda liinkiin ni saaqama!");
+                alert("Kaffaltiin keessan hundi erga mirkanaa'e booda liinkiin ni saaqama! File hin argamne.");
             }
-        };
+        });
+
+        document.getElementById('preview-pdf-btn').addEventListener('click', function() {
+            const previewUrl = this.getAttribute('data-link');
+            if(previewUrl && previewUrl !== "") {
+                window.open(previewUrl, '_blank');
+            } else {
+                alert("Preview PDF hin argamne ykn gad-dhiifamuutti jira.");
+            }
+        });
 
         function setGlobalLang(lang) {
             document.body.classList.remove('lang-om-only', 'lang-en-only');
