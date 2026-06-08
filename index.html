@@ -111,18 +111,22 @@
             downloadBtn.disabled = true;
             downloadBtn.style.opacity = "0.6";
 
-            previewBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Loading...`;
+            previewBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Loading Preview...`;
             previewBtn.disabled = true;
             previewBtn.style.opacity = "0.6";
 
             try {
-                const { data, error } = await _supabase
-                    .from('courses')
-                    .select('file_url, preview_url')
-                    .eq('id', courseId)
-                    .single();
+                let query = _supabase.from('courses').select('file_url, preview_url');
+                
+                if (courseId && courseId.trim() !== "") {
+                    query = query.eq('id', courseId);
+                }
+                
+                const { data: records, error } = await query;
 
                 if (error) throw error;
+
+                const data = (records && records.length > 0) ? records[0] : null;
 
                 // Handle file_url (Download)
                 if (data && data.file_url && data.file_url.trim() !== "") {
@@ -130,20 +134,25 @@
                     downloadBtn.innerHTML = `<i class="fa-solid fa-file-pdf"></i> DOWNLOAD / ERGI`;
                     downloadBtn.disabled = false;
                     downloadBtn.style.opacity = "1";
+                    downloadBtn.style.backgroundColor = "#047857";
                 } else {
-                    downloadBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Liinkiin PDF hin argamne`;
+                    downloadBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> LIINKIIN PDF HIN ARGAMNE`;
                     downloadBtn.setAttribute('data-link', '');
+                    downloadBtn.style.backgroundColor = "#ef4444";
                 }
 
                 // Handle preview_url (Preview)
                 if (data && data.preview_url && data.preview_url.trim() !== "") {
                     previewBtn.setAttribute('data-link', data.preview_url.trim());
-                    previewBtn.innerHTML = `<i class="fa-solid fa-eye"></i> PREVIEW PDF`;
+                    previewBtn.innerHTML = `<i class="fa-solid fa-book-open"></i> BILISAAN DUBBISI (20%)`;
                     previewBtn.disabled = false;
                     previewBtn.style.opacity = "1";
+                    previewBtn.style.backgroundColor = "#4A5568";
                 } else {
-                    previewBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Preview hin argamne`;
+                    previewBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> PREVIEW HIN ARGAMNE`;
+                    previewBtn.disabled = true;
                     previewBtn.setAttribute('data-link', '');
+                    previewBtn.style.backgroundColor = "#ef4444";
                 }
 
             } catch (err) {
