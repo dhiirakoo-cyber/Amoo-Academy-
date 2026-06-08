@@ -107,60 +107,67 @@
             const downloadBtn = document.getElementById('download-pdf-btn');
             const previewBtn = document.getElementById('preview-pdf-btn');
             
+            if (!downloadBtn) return;
+            
             downloadBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Loading...`;
             downloadBtn.disabled = true;
             downloadBtn.style.opacity = "0.6";
 
-            previewBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Loading Preview...`;
-            previewBtn.disabled = true;
-            previewBtn.style.opacity = "0.6";
+            if (previewBtn) {
+                previewBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Loading Preview...`;
+                previewBtn.disabled = true;
+                previewBtn.style.opacity = "0.6";
+            }
+
+            const defaultLink = "https://t.me/amotech2025";
 
             try {
-                let query = _supabase.from('courses').select('file_url, preview_url');
-                
-                if (courseId && courseId.trim() !== "") {
-                    query = query.eq('id', courseId);
-                }
-                
-                const { data: records, error } = await query;
+                const { data: records, error } = await _supabase
+                    .from('courses')
+                    .select('file_url, preview_url, id');
 
                 if (error) throw error;
 
-                const data = (records && records.length > 0) ? records[0] : null;
-
-                // Handle file_url (Download)
-                if (data && data.file_url && data.file_url.trim() !== "") {
-                    downloadBtn.setAttribute('data-link', data.file_url.trim());
-                    downloadBtn.innerHTML = `<i class="fa-solid fa-file-pdf"></i> DOWNLOAD / ERGI`;
-                    downloadBtn.disabled = false;
-                    downloadBtn.style.opacity = "1";
-                    downloadBtn.style.backgroundColor = "#047857";
-                } else {
-                    downloadBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> LIINKIIN PDF HIN ARGAMNE`;
-                    downloadBtn.setAttribute('data-link', '');
-                    downloadBtn.style.backgroundColor = "#ef4444";
+                let data = null;
+                if (records && records.length > 0) {
+                    data = records.find(r => String(r.id) === String(courseId)) || records[0];
                 }
 
-                // Handle preview_url (Preview)
-                if (data && data.preview_url && data.preview_url.trim() !== "") {
-                    previewBtn.setAttribute('data-link', data.preview_url.trim());
+                if (data && data.file_url && data.file_url.trim() !== "") {
+                    downloadBtn.setAttribute('data-link', data.file_url.trim());
+                } else {
+                    downloadBtn.setAttribute('data-link', defaultLink);
+                }
+                downloadBtn.innerHTML = `<i class="fa-solid fa-file-pdf"></i> PDF KALLATTIIN BANADHU / ERGI`;
+                downloadBtn.disabled = false;
+                downloadBtn.style.opacity = "1";
+                downloadBtn.style.backgroundColor = "#047857";
+
+                if (previewBtn) {
+                    if (data && data.preview_url && data.preview_url.trim() !== "") {
+                        previewBtn.setAttribute('data-preview', data.preview_url.trim());
+                    } else {
+                        previewBtn.setAttribute('data-preview', defaultLink);
+                    }
                     previewBtn.innerHTML = `<i class="fa-solid fa-book-open"></i> BILISAAN DUBBISI (20%)`;
                     previewBtn.disabled = false;
                     previewBtn.style.opacity = "1";
                     previewBtn.style.backgroundColor = "#4A5568";
-                } else {
-                    previewBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> PREVIEW HIN ARGAMNE`;
-                    previewBtn.disabled = true;
-                    previewBtn.setAttribute('data-link', '');
-                    previewBtn.style.backgroundColor = "#ef4444";
                 }
 
             } catch (err) {
-                console.error("Error fetching URLs:", err);
-                downloadBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Ergaa uumameera`;
-                downloadBtn.disabled = true;
-                previewBtn.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Ergaa uumameera`;
-                previewBtn.disabled = true;
+                console.error("Error fetching data:", err);
+                downloadBtn.setAttribute('data-link', defaultLink);
+                downloadBtn.innerHTML = `<i class="fa-solid fa-file-pdf"></i> PDF KALLATTIIN BANADHU / ERGI`;
+                downloadBtn.disabled = false;
+                downloadBtn.style.backgroundColor = "#047857";
+
+                if (previewBtn) {
+                    previewBtn.setAttribute('data-preview', defaultLink);
+                    previewBtn.innerHTML = `<i class="fa-solid fa-book-open"></i> BILISAAN DUBBISI (20%)`;
+                    previewBtn.disabled = false;
+                    previewBtn.style.backgroundColor = "#4A5568";
+                }
             }
         }
 
@@ -168,17 +175,13 @@
             const fileUrl = this.getAttribute('data-link');
             if(fileUrl && fileUrl !== "") {
                 window.open(fileUrl, '_blank');
-            } else {
-                alert("Kaffaltiin keessan hundi erga mirkanaa'e booda liinkiin ni saaqama! File hin argamne.");
             }
         });
 
         document.getElementById('preview-pdf-btn').addEventListener('click', function() {
-            const previewUrl = this.getAttribute('data-link');
+            const previewUrl = this.getAttribute('data-preview');
             if(previewUrl && previewUrl !== "") {
                 window.open(previewUrl, '_blank');
-            } else {
-                alert("Preview PDF hin argamne ykn gad-dhiifamuutti jira.");
             }
         });
 
