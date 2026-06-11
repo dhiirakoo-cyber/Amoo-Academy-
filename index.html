@@ -145,8 +145,8 @@
             try {
                 // Fetch course_name and language columns natively from Supabase
                 const { data, error } = await _supabase
-                    .from('"amoo-academy"')
-                    .select('course_name,"language text",created_at')
+                    .from('amoo-academy')
+                    .select('course_name, "language text", created_at')
                     .order('created_at', { ascending: false });
 
                 loadingIndicator.classList.add('hidden');
@@ -162,7 +162,7 @@
                         card.className = "bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition flex flex-col justify-between h-full";
                         
                         const courseName = course.course_name || 'Sagantaa hin beekamne | Unknown Course';
-                        const language = course["language text"] || 'Afaan hin beekamne | Unknown Language';
+                        const language = course['"language text"'] || 'Afaan hin beekamne | Unknown Language';
                         
                         card.innerHTML = `
                             <div>
@@ -225,9 +225,9 @@
             try {
                 // Insert into Supabase table
                 const { data, error } = await _supabase
-                    .from('"amoo-academy"')
+                    .from('amoo-academy')
                     .insert([
-                        { course_name: courseNameInput, "language text": languageInput }
+                        { course_name: courseNameInput, '"language text"': languageInput }
                     ]);
 
                 if (error) {
