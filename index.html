@@ -162,7 +162,7 @@
                         card.className = "bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition flex flex-col justify-between h-full";
                         
                         const courseName = course.course_name || 'Sagantaa hin beekamne | Unknown Course';
-                        const language = course['"language text"'] || 'Afaan hin beekamne | Unknown Language';
+                        const language = course["language text"] || 'Afaan hin beekamne | Unknown Language';
                         
                         card.innerHTML = `
                             <div>
@@ -211,8 +211,8 @@
             
             const submitBtn = document.getElementById('submit-btn');
             const formMessage = document.getElementById('form-message');
-            const courseNameInput = document.getElementById('course_name').value;
-            const languageInput = document.getElementById('language').value;
+            const courseName = document.getElementById('course_name').value;
+            const courseLanguage = document.getElementById('language').value;
             
             // Loading state
             const originalBtnText = submitBtn.innerHTML;
@@ -227,7 +227,7 @@
                 const { data, error } = await _supabase
                     .from('amoo-academy')
                     .insert([
-                        { course_name: courseNameInput, '"language text"': languageInput }
+                        { course_name: courseName, "language text": courseLanguage }
                     ]);
 
                 if (error) {
