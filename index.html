@@ -163,6 +163,7 @@
                         
                         const courseName = course.course_name || 'Sagantaa hin beekamne | Unknown Course';
                         const language = course.language || 'Afaan hin beekamne | Unknown Language';
+                        const pdfUrl = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
                         
                         card.innerHTML = `
                             <div>
@@ -174,9 +175,9 @@
                                 </h3>
                             </div>
                             <div class="mt-6 pt-5 border-t border-slate-100">
-                                <div class="w-full bg-slate-900 text-white text-center text-xs font-bold py-3.5 rounded-xl uppercase tracking-widest shadow-sm">
+                                <button onclick="window.open('${pdfUrl}', '_blank')" class="w-full bg-slate-900 hover:bg-slate-800 transition text-white text-center text-xs font-bold py-3.5 rounded-xl uppercase tracking-widest shadow-sm cursor-pointer">
                                     200 Birr
-                                </div>
+                                </button>
                             </div>
                         `;
                         listContainer.appendChild(card);
