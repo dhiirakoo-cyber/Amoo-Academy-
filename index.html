@@ -146,8 +146,7 @@
                 // Fetch course_name and language columns natively from Supabase
                 const { data, error } = await _supabase
                     .from('amoo-academy')
-                    .select('course_name, language')
-                    .order('created_at', { ascending: false });
+                    .select('course_name, language');
 
                 loadingIndicator.classList.add('hidden');
                 listContainer.classList.remove('hidden');
