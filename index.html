@@ -143,7 +143,7 @@
             loadingIndicator.classList.remove('hidden');
 
             try {
-                // Fetch course_name and language columns natively from Supabase
+                // Fixed: Only selecting course_name and language. Removed created_at.
                 const { data, error } = await _supabase
                     .from('amoo-academy')
                     .select('course_name, language');
@@ -156,6 +156,7 @@
                 }
 
                 if (data && data.length > 0) {
+                    listContainer.classList.add('grid', 'sm:grid-cols-2');
                     data.forEach(course => {
                         const card = document.createElement('div');
                         card.className = "bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition flex flex-col justify-between h-full";
@@ -184,7 +185,7 @@
                     listContainer.classList.remove('grid', 'sm:grid-cols-2');
                     listContainer.innerHTML = `
                         <div class="w-full border-2 border-dashed border-slate-300 rounded-2xl p-12 text-center bg-slate-50">
-                            <p class="text-slate-500 font-bold text-sm uppercase tracking-wider">Koorsiihanga ammaatti hin galmoofne | No courses registered yet.</p>
+                            <p class="text-slate-500 font-bold text-sm uppercase tracking-wider">Koorsii hanga ammaatti hin galmoofne | No courses registered yet.</p>
                         </div>
                     `;
                 }
@@ -222,7 +223,7 @@
             formMessage.classList.add('hidden');
 
             try {
-                // Insert into Supabase table
+                // Fixed: Explicitly inserting into course_name and language
                 const { data, error } = await _supabase
                     .from('amoo-academy')
                     .insert([
