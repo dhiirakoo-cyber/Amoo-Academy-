@@ -203,10 +203,10 @@
             loadingIndicator.classList.remove('hidden');
 
             try {
-                // Fixed: Only selecting course_name and language. Removed created_at.
+                // Fetch dynamic data from Supabase
                 const { data, error } = await _supabase
                     .from('amoo-academy')
-                    .select('course_name, language');
+                    .select('*');
 
                 loadingIndicator.classList.add('hidden');
                 listContainer.classList.remove('hidden');
@@ -229,7 +229,8 @@
                         const card = document.createElement('div');
                         card.className = "bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition flex flex-col justify-between h-full";
                         
-                        const courseName = course.course_name || 'Sagantaa hin beekamne | Unknown Course';
+                        // Dynamically pull from course_name, title, or fallback to unknown
+                        const courseName = course.course_name || course.title || course.name || 'Sagantaa hin beekamne | Unknown Course';
                         const language = course.language || 'Afaan hin beekamne | Unknown Language';
                         const pdfUrl = samplePdfs[index % samplePdfs.length];
                         
