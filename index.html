@@ -61,7 +61,7 @@
                     Odeeffannoo koorsii haaraa galchi | Enter new course details
                 </p>
                 
-                <form id="add-course-form" onsubmit="addCourse(event)" class="space-y-4">
+                <form id="add-course-form" class="space-y-4">
                     <div>
                         <label class="block text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">
                             Maqaa Koorsii | Course Name
@@ -240,7 +240,7 @@
                 document.getElementById('add-course-form').reset();
                 
                 // Auto-refresh the courses list
-                getCourses();
+                await getCourses();
 
             } catch (err) {
                 console.error("Error adding course:", err);
@@ -255,7 +255,10 @@
         }
 
         // Fetch courses on page load
-        window.onload = getCourses;
+        window.onload = function() {
+            getCourses();
+            document.getElementById('add-course-form').addEventListener('submit', addCourse);
+        };
     </script>
 </body>
 </html>
