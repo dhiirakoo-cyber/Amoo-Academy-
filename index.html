@@ -122,6 +122,66 @@
         </div>
     </footer>
 
+    <!-- Payment Modal -->
+    <div id="payment-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" onclick="closePaymentModal()"></div>
+        <div class="bg-white rounded-2xl shadow-2xl relative z-10 w-full max-w-2xl mx-4 overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="p-4 sm:p-6 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-white">
+                <h3 class="text-xl font-black text-slate-900">
+                    Kaffaltii | Payment Instructions
+                </h3>
+                <button onclick="closePaymentModal()" class="text-slate-400 hover:text-slate-600 transition p-2 rounded-lg hover:bg-slate-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+            </div>
+            <div class="p-4 sm:p-6 overflow-y-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- Afaan Oromoo -->
+                    <div class="space-y-4">
+                        <div class="text-[10px] font-extrabold text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-3 py-1 uppercase tracking-wider inline-block">
+                            Afaan Oromoo
+                        </div>
+                        <p class="text-sm font-medium text-slate-700 leading-relaxed">
+                            Koorsii guutuu argachuuf, maaloo qarshii 200 herrega Telebirr ykn Baankii keenyatti kaffaluun ragaa kaffaltii (screenshot/receipt) Telegram ykn WhatsApp keenyatti nuuf ergaa.
+                        </p>
+                    </div>
+                    <!-- English -->
+                    <div class="space-y-4">
+                        <div class="text-[10px] font-extrabold text-slate-700 bg-slate-100 border border-slate-200 rounded-full px-3 py-1 uppercase tracking-wider inline-block">
+                            English
+                        </div>
+                        <p class="text-sm font-medium text-slate-700 leading-relaxed">
+                            To get the full course, please transfer 200 Birr to our Telebirr or Bank account and send the screenshot/receipt to our Telegram or WhatsApp.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mt-8 space-y-4 bg-slate-50 p-4 sm:p-5 rounded-xl border border-slate-200">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <span class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">Telebirr</span>
+                            <span class="text-sm font-black text-slate-900">[Telebirr Account Number]</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1">CBE Bank</span>
+                            <span class="text-sm font-black text-slate-900">[Bank Account Number]</span>
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t border-slate-200/60 flex items-center justify-start gap-6">
+                        <a href="#" class="text-blue-600 hover:text-blue-700 text-sm font-bold flex items-center gap-1.5 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                            [Telegram Link]
+                        </a>
+                        <a href="#" class="text-emerald-600 hover:text-emerald-700 text-sm font-bold flex items-center gap-1.5 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            [WhatsApp Link]
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- JavaScript & Supabase Logic -->
     <script>
         // Supabase Credentials
@@ -157,13 +217,21 @@
 
                 if (data && data.length > 0) {
                     listContainer.classList.add('grid', 'sm:grid-cols-2');
-                    data.forEach(course => {
+                    
+                    const samplePdfs = [
+                        "https://pdfobject.com/pdf/sample.pdf",
+                        "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+                        "https://sedl.org/afterschool/toolkits/science/pdf/ast_sci_data_tables_sample.pdf",
+                        "https://s29.q4cdn.com/175625835/files/doc_downloads/test.pdf"
+                    ];
+
+                    data.forEach((course, index) => {
                         const card = document.createElement('div');
                         card.className = "bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition flex flex-col justify-between h-full";
                         
                         const courseName = course.course_name || 'Sagantaa hin beekamne | Unknown Course';
                         const language = course.language || 'Afaan hin beekamne | Unknown Language';
-                        const pdfUrl = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+                        const pdfUrl = samplePdfs[index % samplePdfs.length];
                         
                         card.innerHTML = `
                             <div>
@@ -174,9 +242,12 @@
                                     ${courseName}
                                 </h3>
                             </div>
-                            <div class="mt-6 pt-5 border-t border-slate-100">
-                                <button onclick="window.open('${pdfUrl}', '_blank')" class="w-full bg-slate-900 hover:bg-slate-800 transition text-white text-center text-xs font-bold py-3.5 rounded-xl uppercase tracking-widest shadow-sm cursor-pointer">
-                                    200 Birr
+                            <div class="mt-6 pt-5 border-t border-slate-100 flex flex-col gap-3">
+                                <button onclick="window.open('${pdfUrl}', '_blank')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition text-center text-xs font-bold py-3 rounded-xl uppercase tracking-widest shadow-sm border border-slate-200 cursor-pointer">
+                                    Piriiviyuu | Preview PDF
+                                </button>
+                                <button onclick="openPaymentModal()" class="w-full bg-blue-600 hover:bg-blue-700 transition text-white text-center text-xs font-bold py-3.5 rounded-xl uppercase tracking-widest shadow-sm cursor-pointer flex justify-center items-center gap-2">
+                                    Guutuu Biti | Buy Full Course
                                 </button>
                             </div>
                         `;
@@ -261,6 +332,15 @@
             getCourses();
             document.getElementById('add-course-form').addEventListener('submit', addCourse);
         };
+
+        // Modal Functions
+        function openPaymentModal() {
+            document.getElementById('payment-modal').classList.remove('hidden');
+        }
+
+        function closePaymentModal() {
+            document.getElementById('payment-modal').classList.add('hidden');
+        }
     </script>
 </body>
 </html>
