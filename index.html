@@ -37,28 +37,35 @@
 <body class="min-h-screen flex flex-col">
 
     <!-- Header -->
-    <header class="bg-white border-b border-slate-200 shadow-sm sticky top-0 z-40">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-            <h1 class="text-xl font-black tracking-tight text-slate-900">
+    <header class="bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+            <h1 class="text-2xl font-black tracking-tighter text-slate-900 flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-800 text-white flex items-center justify-center shadow-[0_2px_10px_-2px_rgba(37,99,235,0.5)]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2" ry="2"/></svg>
+                </div>
                 <span class="text-blue-600">Amoo</span> Academy
             </h1>
-            <div class="text-xs font-bold text-slate-500 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-lg shadow-sm">
+            <div class="text-[11px] font-extrabold text-[#b8860b] bg-[#fbf7eb] border border-[#f5e6b3] px-3.5 py-1.5 rounded-full shadow-sm uppercase tracking-widest flex items-center gap-1.5">
+                <div class="w-1.5 h-1.5 bg-[#daa520] rounded-full animate-pulse"></div>
                 Sirna Koorsii | Course System
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="flex-grow max-w-5xl mx-auto px-4 py-8 sm:py-12 w-full grid grid-cols-1 md:grid-cols-3 gap-8">
+    <main class="flex-grow max-w-6xl mx-auto px-4 py-8 sm:py-12 w-full grid grid-cols-1 md:grid-cols-3 gap-8">
         
         <!-- Form Section -->
         <div class="md:col-span-1">
-            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200 md:sticky md:top-24">
-                <h2 class="text-lg font-black text-slate-900 mb-1">
-                    Koorsii Haaraa Dabali | Add New Course
+            <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-slate-200 md:sticky md:top-28">
+                <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-5 border border-blue-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                </div>
+                <h2 class="text-xl font-black text-slate-900 mb-1.5 tracking-tight">
+                    Koorsii Haaraa Dabali
                 </h2>
-                <p class="text-xs text-slate-500 mb-6 font-medium">
-                    Odeeffannoo koorsii haaraa galchi | Enter new course details
+                <p class="text-xs text-slate-500 mb-8 font-semibold uppercase tracking-widest">
+                    Add New Course
                 </p>
                 
                 <form id="add-course-form" class="space-y-4">
@@ -94,11 +101,17 @@
 
         <!-- Course List Section -->
         <div class="md:col-span-2">
-            <div class="flex items-center justify-between mb-6 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
-                <h2 class="text-xl font-black text-slate-900">
-                    Galmee Koorsii | Course Registry
-                </h2>
-                <button onclick="getCourses()" class="text-xs text-blue-700 hover:text-blue-900 font-bold bg-blue-50 hover:bg-blue-100 border border-blue-200 px-4 py-2 rounded-xl transition uppercase tracking-wide">
+            <div class="flex items-center justify-between mb-8 bg-white p-5 rounded-2xl border border-slate-200 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]">
+                <div>
+                    <h2 class="text-xl font-black text-slate-900 tracking-tight">
+                        Galmee Koorsii
+                    </h2>
+                    <p class="text-[10px] sm:text-xs text-slate-500 font-bold uppercase tracking-widest mt-0.5">
+                        Course Registry Overview
+                    </p>
+                </div>
+                <button onclick="getCourses()" class="group flex items-center gap-2 text-xs text-blue-700 hover:text-blue-900 font-bold bg-blue-50 hover:bg-blue-100 border border-blue-200 px-4 py-2.5 rounded-xl transition-all duration-300 uppercase tracking-widest shadow-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="transform group-hover:rotate-180 transition-transform duration-500"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                     Haaromsi | Refresh
                 </button>
             </div>
@@ -203,65 +216,98 @@
             loadingIndicator.classList.remove('hidden');
 
             try {
-                // Fetch dynamic data from Supabase
-                const { data, error } = await _supabase
-                    .from('amoo-academy')
-                    .select('*');
+                // Simulate network request slightly for clean transition
+                await new Promise(resolve => setTimeout(resolve, 300));
+
+                // Force defined Fixed Course Array to guarantee order and separate titles
+                const fixedCourses = [
+                    { title: "Graphic Design", content: "Master industry-standard tools for visual communication.", language: "Afaan Oromoo & English", imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71" },
+                    { title: "Web Development", content: "Build modern, responsive, and dynamic web applications.", language: "Afaan Oromoo & English", imageUrl: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97" },
+                    { title: "Video Editing", content: "Create professional-grade video content and visual effects.", language: "Afaan Oromoo & English", imageUrl: "https://images.unsplash.com/photo-1622737133809-d95047b9e673" },
+                    { title: "Photo Editing", content: "Enhance, retouch, and manipulate images with precision.", language: "Afaan Oromoo & English", imageUrl: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32" }
+                ];
 
                 loadingIndicator.classList.add('hidden');
                 listContainer.classList.remove('hidden');
+                listContainer.classList.add('grid', 'sm:grid-cols-2', 'gap-6');
 
-                if (error) {
-                    throw error;
-                }
+                const samplePdfs = [
+                    "https://pdfobject.com/pdf/sample.pdf",
+                    "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+                    "https://sedl.org/afterschool/toolkits/science/pdf/ast_sci_data_tables_sample.pdf",
+                    "https://s29.q4cdn.com/175625835/files/doc_downloads/test.pdf"
+                ];
 
-                if (data && data.length > 0) {
-                    listContainer.classList.add('grid', 'sm:grid-cols-2');
+                fixedCourses.forEach((course, index) => {
+                    const card = document.createElement('div');
+                    card.className = "bg-white border border-slate-200 rounded-2xl hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:border-blue-200 transition-all duration-300 flex flex-col h-full relative overflow-hidden group";
                     
-                    const samplePdfs = [
-                        "https://pdfobject.com/pdf/sample.pdf",
-                        "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-                        "https://sedl.org/afterschool/toolkits/science/pdf/ast_sci_data_tables_sample.pdf",
-                        "https://s29.q4cdn.com/175625835/files/doc_downloads/test.pdf"
-                    ];
-
-                    data.forEach((course, index) => {
-                        const card = document.createElement('div');
-                        card.className = "bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-lg transition flex flex-col justify-between h-full";
-                        
-                        // Dynamically pull from course_name, title, or fallback to unknown
-                        const courseName = course.course_name || course.title || course.name || 'Sagantaa hin beekamne | Unknown Course';
-                        const language = course.language || 'Afaan hin beekamne | Unknown Language';
-                        const pdfUrl = samplePdfs[index % samplePdfs.length];
+                    const formattedCourseName = course.title;
+                    const language = course.language;
+                    const imageUrl = course.imageUrl;
+                    const pdfUrl = samplePdfs[index % samplePdfs.length];
                         
                         card.innerHTML = `
-                            <div>
-                                <div class="inline-block px-3 py-1 mb-4 text-[10px] font-extrabold text-blue-700 bg-blue-50 border border-blue-200 rounded-full uppercase tracking-wider">
-                                    ${language}
-                                </div>
-                                <h3 class="font-black text-slate-900 text-lg leading-snug mb-2">
-                                    ${courseName}
-                                </h3>
+                            <!-- Decorative Top Gradient Line -->
+                            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20"></div>
+                            
+                            <!-- Course Image Header -->
+                            <div class="w-full h-48 bg-slate-100 relative overflow-hidden shrink-0">
+                                <img src="${imageUrl}?auto=format&fit=crop&w=600&q=80" alt="${formattedCourseName}" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out" />
                             </div>
-                            <div class="mt-6 pt-5 border-t border-slate-100 flex flex-col gap-3">
-                                <button onclick="window.open('${pdfUrl}', '_blank')" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition text-center text-xs font-bold py-3 rounded-xl uppercase tracking-widest shadow-sm border border-slate-200 cursor-pointer">
+
+                            <div class="relative z-10 flex flex-col flex-grow p-6">
+                                <div class="flex items-center justify-between mb-5">
+                                    <div class="flex flex-col gap-1.5">
+                                        <span class="text-[9px] font-extrabold text-slate-400 border border-slate-200 px-2 py-0.5 rounded uppercase tracking-widest inline-block w-fit">Afaan | Language</span>
+                                        <div class="inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-extrabold text-[#b8860b] bg-[#fbf7eb] border border-[#f5e6b3] rounded-full uppercase tracking-widest shadow-sm">
+                                            <div class="w-1 h-1 rounded-full bg-[#daa520]"></div>
+                                            ${language}
+                                        </div>
+                                    </div>
+                                    <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center border border-blue-100 shadow-sm ml-2 shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-6 flex-grow">
+                                    <span class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2">Maqaa Koorsii | Course Name</span>
+                                    <!-- Dynamic title wrapped safely inside an interactive button container -->
+                                    <button type="button" class="group/btn relative w-full text-left bg-slate-50 hover:bg-white border border-slate-200 hover:border-blue-300 p-4 rounded-xl transition-all duration-300 shadow-sm hover:shadow-[0_4px_14px_0_rgba(37,99,235,0.1)] cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500/50 flex flex-col gap-1.5 overflow-hidden">
+                                        <div class="absolute inset-y-0 left-0 w-1 bg-blue-600 transform scale-y-0 group-hover/btn:scale-y-100 origin-top transition-transform duration-300 rounded-l-xl"></div>
+                                        <span class="font-black text-slate-900 text-xl leading-tight">${formattedCourseName}</span>
+                                        <span class="text-xs font-semibold text-slate-500 leading-relaxed">${course.content}</span>
+                                    </button>
+                                </div>
+                                
+                                <div class="pt-5 border-t border-slate-100 mb-2">
+                                    <span class="block text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-3">Gatii Koorsii | Course Price</span>
+                                    <div class="flex items-center gap-3">
+                                        <!-- Fixed precise bilingual pricing using premium Emerald -->
+                                        <div class="bg-emerald-50 border border-emerald-200/80 text-emerald-700 font-black text-sm px-3.5 py-2 rounded-lg uppercase tracking-widest shadow-sm flex items-center gap-1.5">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                                            200 Birrii
+                                        </div>
+                                        <div class="bg-slate-50 border border-slate-200 text-slate-600 font-black text-sm px-3.5 py-2 rounded-lg uppercase tracking-widest shadow-sm">
+                                            200 Birr
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-6 pt-5 border-t border-slate-100 flex flex-col gap-3 relative z-10">
+                                <button onclick="window.open('${pdfUrl}', '_blank')" class="w-full bg-white hover:bg-slate-50 text-slate-700 transition-all duration-200 text-center text-[11px] font-bold py-3.5 rounded-xl uppercase tracking-widest shadow-sm border border-slate-200 cursor-pointer flex justify-center items-center gap-2 group/btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 group-hover/btn:text-blue-500 transition-colors"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
                                     Piriiviyuu | Preview PDF
                                 </button>
-                                <button onclick="openPaymentModal()" class="w-full bg-blue-600 hover:bg-blue-700 transition text-white text-center text-xs font-bold py-3.5 rounded-xl uppercase tracking-widest shadow-sm cursor-pointer flex justify-center items-center gap-2">
+                                <button onclick="openPaymentModal()" class="w-full bg-blue-600 hover:bg-indigo-700 transition-all duration-300 text-white text-center text-[11px] font-bold py-3.5 rounded-xl uppercase tracking-widest shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] cursor-pointer flex justify-center items-center gap-2 transform hover:-translate-y-0.5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
                                     Guutuu Biti | Buy Full Course
                                 </button>
                             </div>
                         `;
                         listContainer.appendChild(card);
                     });
-                } else {
-                    listContainer.classList.remove('grid', 'sm:grid-cols-2');
-                    listContainer.innerHTML = `
-                        <div class="w-full border-2 border-dashed border-slate-300 rounded-2xl p-12 text-center bg-slate-50">
-                            <p class="text-slate-500 font-bold text-sm uppercase tracking-wider">Koorsii hanga ammaatti hin galmoofne | No courses registered yet.</p>
-                        </div>
-                    `;
-                }
 
             } catch (err) {
                 loadingIndicator.classList.add('hidden');
